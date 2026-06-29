@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABD Crop Recommendation System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5faf5;
+color:#333;
+}
+
+/* Navigation */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:#1b5e20;
+color:white;
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+nav ul li a:hover{
+color:#90ee90;
+}
+
+/* Hero */
+
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:70px 8%;
+background:linear-gradient(135deg,#2e7d32,#66bb6a);
+color:white;
+}
+
+.hero-text{
+max-width:550px;
+}
+
+.hero h1{
+font-size:52px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+.btn{
+padding:15px 35px;
+background:white;
+color:#2e7d32;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+margin-right:15px;
+transition:.3s;
+}
+
+.btn:hover{
+background:#dcedc8;
+}
+
+.hero img{
+width:450px;
+}
+
+/* Features */
+
+.features{
+padding:80px 8%;
+text-align:center;
+}
+
+.features h2{
+font-size:40px;
+margin-bottom:50px;
+color:#1b5e20;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.card h3{
+margin:20px 0;
+color:#2e7d32;
+}
+
+/* How */
+
+.how{
+padding:80px 8%;
+background:#e8f5e9;
+text-align:center;
+}
+
+.how h2{
+font-size:40px;
+margin-bottom:50px;
+color:#1b5e20;
+}
+
+.steps{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.step{
+background:white;
+padding:30px;
+width:250px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.step span{
+font-size:45px;
+}
+
+/* About */
+
+.about{
+padding:80px 10%;
+text-align:center;
+}
+
+.about h2{
+font-size:40px;
+color:#1b5e20;
+margin-bottom:30px;
+}
+
+.about p{
+font-size:18px;
+line-height:1.8;
+}
+
+/* Footer */
+
+footer{
+background:#1b5e20;
+color:white;
+padding:25px;
+text-align:center;
+margin-top:50px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">Crop Recommendation System</div>
+
+<ul>
+
+<li><a href="/">Home</a></li>
+<li><a href="/predict-page">Predict</a></li>
+<li><a href="/login">Login</a></li>
+<li><a href="/about">About</a></li>
+
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Crop Recommendation System</h1>
+
+<p>
+
+This machine learning framework empowers farmers to maximize yields by taking the guesswork out of crop selection. By analyzing real-time soil nutrients (N, P, K) and environmental factors like temperature, humidity, rainfall, and pH, advanced predictive models recommend the perfect crop for the specific land conditions. This data-driven approach bridges the gap between technology and traditional farming, boosting profitability while promoting sustainable agriculture.
+</p>
+
+<a href="/predict-page" class="btn">Start Prediction</a>
+
+<a href="/login" class="btn">Login</a>
+
+</div>
+
+<img src="farm.avif" alt="farmer">
+
+</section>
+
+<section class="features">
+
+<h2>Why Choose CropSense?</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h1></h1>
+
+<h3>Smart Recommendation</h3>
+
+<p>Machine Learning recommends the most suitable crop.</p>
+
+</div>
+
+<div class="card">
+
+<h1>🧪</h1>
+
+<h3>Soil Analysis</h3>
+
+<p>Analyzes N, P, K values and soil pH.</p>
+
+</div>
+
+<div class="card">
+
+<h1>🌦️</h1>
+
+<h3>Climate Analysis</h3>
+
+<p>Uses temperature, humidity and rainfall data.</p>
+
+</div>
+
+<div class="card">
+
+<h1>📈</h1>
+
+<h3>High Accuracy</h3>
+
+<p>Prediction based on trained dataset using Machine Learning.</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="how">
+
+<h2>How It Works</h2>
+
+<div class="steps">
+
+<div class="step">
+
+<span>①</span>
+
+<h3>Enter Data</h3>
+
+<p>Provide soil and weather information.</p>
+
+</div>
+
+<div class="step">
+
+<span>②</span>
+
+<h3>AI Analysis</h3>
+
+<p>The ML model processes your inputs.</p>
+
+</div>
+
+<div class="step">
+
+<span>③</span>
+
+<h3>Get Recommendation</h3>
+
+<p>Receive the best crop with useful suggestions.</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="about">
+
+<h2>About This Project</h2>
+
+<p>
+
+Crop Recommendation System is an advanced Machine Learning initiative developed as a 7th-semester Project Work by Ayush BK, Bisham Kumal, and Dipak Tamang during the Bachelor of Science in Computer Science and Information Technology (BSc. CSIT) program, affiliated with Tribhuvan University (TU). Engineered to bridge the gap between traditional agricultural practices and modern data-driven technology, this system empowers farmers with intelligent, predictive decision-making tools. By analyzing critical environmental and subterranean parameters—specifically soil macronutrients (Nitrogen, Phosphorus, Potassium), temperature, humidity, rainfall, and pH levels—the system accurately forecasts and recommends the most viable and high-yielding crops for cultivation, ultimately optimizing agricultural productivity.
+
+</p>
+
+</section>
+
+<footer>
+
+© 2026 CropSense | Smart Crop Recommendation System
+
+</footer>
+
+</body>
+</html>

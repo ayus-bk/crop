@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Login | CropSense</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+url("https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1600");
+background-size:cover;
+background-position:center;
+}
+
+.login-box{
+width:400px;
+background:white;
+padding:40px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+.login-box h2{
+text-align:center;
+color:#2e7d32;
+margin-bottom:30px;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+margin-bottom:6px;
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+}
+
+input:focus{
+outline:none;
+border-color:#2e7d32;
+}
+
+.options{
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+font-size:14px;
+}
+
+.options a{
+text-decoration:none;
+color:#2e7d32;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+.register{
+text-align:center;
+margin-top:20px;
+}
+
+.register a{
+text-decoration:none;
+color:#2e7d32;
+font-weight:bold;
+}
+
+.home{
+text-align:center;
+margin-top:15px;
+}
+
+.home a{
+text-decoration:none;
+color:#666;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+<h2>Farmer Login</h2>
+
+<form action="/login" method="POST">
+
+<div class="input-group">
+<label>Username or Email</label>
+<input
+type="text"
+name="username"
+placeholder="Enter username or email"
+required>
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<input
+type="password"
+name="password"
+placeholder="Enter password"
+required>
+</div>
+
+<div class="options">
+
+<label>
+<input type="checkbox">
+ Remember Me
+</label>
+
+<a href="#">Forgot Password?</a>
+
+</div>
+
+<button type="submit">
+Login
+</button>
+
+</form>
+
+<div class="register">
+
+Don't have an account?
+
+<a href="/register">
+Register Here
+</a>
+
+</div>
+
+<div class="home">
+
+<a href="/">
+← Back to Home
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
