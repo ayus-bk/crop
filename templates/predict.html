@@ -3,807 +3,493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Predict | Crop Recommendation System</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<title>Crop Recommendation System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+:root {
+  --bg:      #f6f8f4;
+  --bg2:     #eef2ea;
+  --bg3:     #e7ede2;
+  --card:    #ffffff;
+  --card2:   #f1f5ee;
+  --line:    rgba(34,84,42,.12);
+  --line2:   rgba(34,84,42,.25);
+  --green:   #2f7d3f;
+  --green2:  #246633;
+  --green3:  #1f5c2c;
+  --amber:   #b9790c;
+  --red:     #c0392b;
+  --text:    #1f2a22;
+  --muted:   #5e6e5f;
+  --muted2:  #8a978a;
+  --r:       12px;
+  --rsm:     8px;
 }
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-background:#f5faf5;
-color:#333;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-/* Navigation — identical to homepage */
-
+/* NAV */
 nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 8%;
-background:#1b5e20;
-color:white;
-position:sticky;
-top:0;
-z-index:100;
+  position:sticky;top:0;z-index:200;
+  background:rgba(246,248,244,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:0 2rem;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{
+  font-family:'Lora',serif;font-size:19px;font-weight:600;
+  color:var(--green2);display:flex;align-items:center;gap:9px;letter-spacing:.2px;
+}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+.nav-pills{display:flex;gap:1.6rem}
+.nav-pill{text-align:center}
+.nav-pill-val{font-size:14px;font-weight:600;color:var(--green2)}
+.nav-pill-lbl{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-top:1px}
+
+/* HERO */
+.hero{padding:3.2rem 2rem 2rem;text-align:center;}
+.hero-chip{
+  display:inline-block;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--green2);padding:6px 16px;
+  background:var(--bg3);
+  border:1px solid var(--line2);border-radius:30px;
+  margin-bottom:1.2rem;
+}
+.hero h1{
+  font-family:'Lora',serif;
+  font-size:clamp(28px,4.5vw,46px);
+  font-weight:600;line-height:1.2;
+  margin-bottom:.8rem;
+  color:var(--green2);
+}
+.hero-sub{
+  font-size:14px;color:var(--muted);font-weight:400;
+  line-height:1.7;max-width:520px;margin:0 auto 1.6rem;
+}
+.hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-tag{
+  font-size:12px;padding:5px 13px;border-radius:6px;
+  background:var(--card);border:1px solid var(--line);
+  color:var(--muted);
+}
+.hero-tag b{color:var(--green2);font-weight:600}
+
+/* MAIN GRID */
+main{
+  max-width:1120px;margin:0 auto;
+  padding:0 1.5rem 4rem;
+  display:grid;
+  grid-template-columns:1fr 430px;
+  gap:1.4rem;align-items:start;
 }
 
-.logo{
-font-size:28px;
-font-weight:bold;
-}
-
-nav ul{
-display:flex;
-list-style:none;
-gap:25px;
-}
-
-nav ul li a{
-color:white;
-text-decoration:none;
-font-weight:500;
-}
-
-nav ul li a:hover{
-color:#90ee90;
-}
-
-nav ul li a.active{
-color:#90ee90;
-border-bottom:2px solid #90ee90;
-padding-bottom:4px;
-}
-
-/* Page header band — same gradient family as hero */
-
-.page-header{
-padding:60px 8% 50px;
-background:linear-gradient(135deg,#2e7d32,#66bb6a);
-color:white;
-text-align:center;
-}
-
-.page-header h1{
-font-size:42px;
-margin-bottom:14px;
-}
-
-.page-header p{
-font-size:17px;
-line-height:1.8;
-max-width:640px;
-margin:0 auto;
-opacity:.95;
-}
-
-.header-stats{
-display:flex;
-justify-content:center;
-gap:50px;
-margin-top:35px;
-flex-wrap:wrap;
-}
-
-.hstat{
-text-align:center;
-}
-
-.hstat-val{
-font-size:26px;
-font-weight:700;
-}
-
-.hstat-lbl{
-font-size:12px;
-letter-spacing:1px;
-text-transform:uppercase;
-opacity:.85;
-margin-top:2px;
-}
-
-/* Main two-column layout */
-
-.predict-wrap{
-max-width:1150px;
-margin:0 auto;
-padding:60px 8% 90px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-align-items:start;
-}
-
-/* Cards — same style as homepage .card */
-
+/* PANEL */
 .panel{
-background:white;
-padding:35px;
-border-radius:15px;
-box-shadow:0 8px 20px rgba(0,0,0,.1);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;
+  box-shadow:0 1px 3px rgba(31,42,34,.04);
 }
-
-.panel-title{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:25px;
+.panel-head{
+  padding:1rem 1.4rem;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;
 }
+.ph-title{font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--green2)}
+.panel-body{padding:1.4rem}
 
-.panel-title span{
-font-size:26px;
-}
-
-.panel-title h2{
-font-size:22px;
-color:#1b5e20;
-}
-
-/* Presets — pill buttons matching .btn style */
-
-.presets{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin-bottom:30px;
-}
-
-.preset-btn{
-padding:8px 18px;
-background:#e8f5e9;
-color:#1b5e20;
-border:1px solid #c8e6c9;
-border-radius:30px;
-font-size:13px;
-font-weight:500;
-cursor:pointer;
-transition:.3s;
-font-family:'Poppins',sans-serif;
-}
-
-.preset-btn:hover{
-background:#2e7d32;
-color:white;
-}
-
-/* Section divider */
-
+/* SECTION DIVIDER */
 .sdiv{
-font-size:12px;
-font-weight:600;
-letter-spacing:1px;
-text-transform:uppercase;
-color:#2e7d32;
-margin:25px 0 15px;
-display:flex;
-align-items:center;
-gap:10px;
+  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:10px;margin-bottom:.8rem;
 }
+.sdiv::after{content:'';flex:1;height:1px;background:var(--line)}
 
-.sdiv::after{
-content:'';
-flex:1;
-height:1px;
-background:#dcedc8;
+/* PRESETS — with thumbnail images */
+.presets{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));
+  gap:8px;margin-bottom:1.3rem;
 }
-
-.sdiv:first-child{ margin-top:0; }
-
-/* Field grids */
-
-.field-grid{
-display:grid;
-gap:18px;
-margin-bottom:10px;
+.preset{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:8px 4px;border-radius:9px;
+  background:var(--bg3);border:1px solid var(--line);
+  cursor:pointer;color:var(--muted);
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:10.5px;font-weight:500;text-align:center;
 }
-
-.g3{ grid-template-columns:repeat(3,1fr); }
-.g2{ grid-template-columns:repeat(2,1fr); }
-
-.field-top{
-display:flex;
-justify-content:space-between;
-align-items:baseline;
-margin-bottom:8px;
+.preset:hover{background:var(--card2);border-color:var(--line2);color:var(--green2)}
+.preset img{
+  width:36px;height:36px;border-radius:50%;
+  object-fit:cover;background:var(--bg);
+  border:1px solid var(--line);
 }
+.preset.reset-btn{justify-content:center}
 
-.field-lbl{
-font-size:13px;
-font-weight:500;
-color:#555;
-}
+/* SLIDERS */
+.field-group{display:grid;gap:1rem;margin-bottom:1.3rem}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g2{grid-template-columns:1fr 1fr}
 
+.field-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.field-lbl{font-size:11px;font-weight:500;letter-spacing:.3px;color:var(--muted)}
 .field-val{
-font-size:16px;
-font-weight:600;
-color:#2e7d32;
+  font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--green2);
+  line-height:1;
 }
-
-.field-val span{
-font-size:11px;
-font-weight:400;
-color:#888;
-margin-left:2px;
-}
+.field-unit{font-size:10px;color:var(--muted);font-weight:400;margin-left:2px}
 
 input[type=range]{
-width:100%;
-height:6px;
-border-radius:3px;
--webkit-appearance:none;
-appearance:none;
-background:#dcedc8;
-outline:none;
-cursor:pointer;
+  width:100%;height:4px;border-radius:2px;
+  -webkit-appearance:none;appearance:none;
+  background:var(--bg3);outline:none;cursor:pointer;
 }
-
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--bg3)}
 input[type=range]::-webkit-slider-thumb{
--webkit-appearance:none;
-width:18px;
-height:18px;
-border-radius:50%;
-background:#2e7d32;
-border:3px solid white;
-box-shadow:0 2px 6px rgba(0,0,0,.25);
-cursor:pointer;
-transition:.2s;
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--green);border:2px solid #fff;cursor:pointer;margin-top:-5px;
+  box-shadow:0 0 0 1px var(--line2);
+  transition:transform .15s;
 }
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.15)}
 
-input[type=range]::-webkit-slider-thumb:hover{
-transform:scale(1.15);
-background:#1b5e20;
-}
-
-input[type=range]::-moz-range-thumb{
-width:18px;
-height:18px;
-border-radius:50%;
-background:#2e7d32;
-border:3px solid white;
-box-shadow:0 2px 6px rgba(0,0,0,.25);
-cursor:pointer;
-}
-
-/* Predict button — same pill style as homepage .btn but solid green */
-
+/* PREDICT BUTTON */
 .predict-btn{
-width:100%;
-padding:16px;
-margin-top:20px;
-background:#2e7d32;
-color:white;
-border:none;
-border-radius:30px;
-font-size:17px;
-font-weight:600;
-font-family:'Poppins',sans-serif;
-cursor:pointer;
-transition:.3s;
-box-shadow:0 8px 20px rgba(46,125,50,.25);
+  width:100%;padding:14px;
+  border-radius:var(--rsm);border:none;cursor:pointer;
+  font-family:'Lora',serif;font-size:16px;font-weight:600;
+  background:var(--green2);
+  color:#fff;transition:all .2s;letter-spacing:.2px;
+  margin-top:.4rem;
 }
+.predict-btn:hover{background:var(--green3)}
+.predict-btn:disabled{opacity:.55;cursor:not-allowed}
 
-.predict-btn:hover{
-background:#1b5e20;
-transform:translateY(-2px);
-box-shadow:0 10px 24px rgba(46,125,50,.35);
-}
-
-.predict-btn:active{
-transform:translateY(0);
-}
-
-.predict-btn:disabled{
-opacity:.6;
-cursor:not-allowed;
-transform:none;
-}
-
-/* ── RESULT PANEL ── */
-
-.result-panel{
-min-height:200px;
-}
-
+/* RESULT PANEL — EMPTY STATE */
 .empty-state{
-text-align:center;
-padding:60px 20px;
-color:#888;
+  padding:3.2rem 2rem;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;
 }
+.empty-txt{font-size:13px;color:var(--muted);line-height:1.8;max-width:230px}
 
-.empty-state .emoji{
-font-size:54px;
-margin-bottom:15px;
-display:block;
-opacity:.5;
-}
-
-.empty-state p{
-font-size:15px;
-line-height:1.7;
-max-width:280px;
-margin:0 auto;
-}
-
-.loading-state{
-text-align:center;
-padding:70px 20px;
-}
-
-.spinner{
-width:40px;
-height:40px;
-border:4px solid #dcedc8;
-border-top-color:#2e7d32;
-border-radius:50%;
-margin:0 auto 18px;
-animation:spin .8s linear infinite;
-}
-
-@keyframes spin{ to{ transform:rotate(360deg); } }
-
-.loading-state p{
-color:#2e7d32;
-font-weight:500;
-animation:blink 1.3s ease infinite;
-}
-
-@keyframes blink{ 0%,100%{opacity:.5} 50%{opacity:1} }
-
-/* Crop hero result */
-
+/* RESULT — CROP HERO (with image) */
 .crop-hero{
-text-align:center;
-padding:10px 0 25px;
-border-bottom:2px solid #e8f5e9;
-margin-bottom:22px;
-animation:fadeUp .4s ease;
+  padding:1.6rem 1.5rem 1.4rem;text-align:center;
+  border-bottom:1px solid var(--line);
+  background:var(--bg2);
 }
-
-@keyframes fadeUp{
-from{ opacity:0; transform:translateY(14px); }
-to{ opacity:1; transform:none; }
+.crop-img{
+  width:88px;height:88px;border-radius:50%;
+  object-fit:cover;background:var(--card);
+  border:2px solid var(--card);
+  box-shadow:0 0 0 1px var(--line2);
+  margin-bottom:.7rem;
 }
-
-.crop-emoji{
-font-size:64px;
-display:block;
-margin-bottom:8px;
-}
-
 .crop-name{
-font-size:32px;
-font-weight:700;
-color:#1b5e20;
-text-transform:capitalize;
-margin-bottom:12px;
+  font-family:'Lora',serif;font-size:28px;font-weight:600;
+  text-transform:capitalize;
+  color:var(--green2);
+  margin-bottom:.6rem;
 }
-
-.crop-chips{
-display:flex;
-gap:10px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
+.crop-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .crop-chip{
-padding:6px 16px;
-background:#e8f5e9;
-color:#2e7d32;
-border-radius:20px;
-font-size:12px;
-font-weight:600;
+  padding:4px 13px;border-radius:20px;font-size:11px;font-weight:500;
+  background:#fff;border:1px solid var(--line2);color:var(--green2);
 }
 
-/* Stat grid */
-
+/* RESULT — QUICK STATS GRID */
 .stat-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-margin-bottom:22px;
+  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:1px;background:var(--line);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
 }
+.stat-cell{background:var(--card);padding:.85rem 1rem;}
+.stat-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.stat-val{font-size:14px;font-weight:600;color:var(--text);margin-top:3px}
 
-.stat-cell{
-background:#f5faf5;
-border-radius:10px;
-padding:12px 8px;
-text-align:center;
-}
-
-.stat-lbl{
-font-size:10px;
-color:#888;
-text-transform:uppercase;
-letter-spacing:.5px;
-}
-
-.stat-val{
-font-size:15px;
-font-weight:700;
-color:#1b5e20;
-margin-top:4px;
-}
-
-/* Soil health */
-
-.soil-section{
-margin-bottom:22px;
-}
-
-.soil-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:10px;
-}
-
-.soil-title{
-font-size:13px;
-font-weight:600;
-color:#555;
-text-transform:uppercase;
-letter-spacing:.5px;
-}
-
-.soil-badge{
-font-size:12px;
-font-weight:700;
-padding:4px 14px;
-border-radius:20px;
-}
-
-.s-great{ background:#dcedc8; color:#1b5e20; }
-.s-ok{    background:#fff3cd; color:#856404; }
-.s-poor{  background:#f8d7da; color:#842029; }
-
-.bar-wrap{
-height:8px;
-background:#e8f5e9;
-border-radius:4px;
-overflow:hidden;
-margin-bottom:14px;
-}
-
-.bar-fill{
-height:100%;
-border-radius:4px;
-transition:width 1s ease;
-}
-
-.soil-tips{
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
+/* RESULT — SOIL HEALTH */
+.soil-section{padding:1.1rem 1.4rem;border-bottom:1px solid var(--line)}
+.soil-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.soil-title{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.soil-badge{font-size:12px;font-weight:600;padding:3px 11px;border-radius:20px;}
+.s-great{background:#e4f4e6;color:#246633;border:1px solid #bfe3c5}
+.s-ok   {background:#faf0db;color:#9a6a08;border:1px solid #efd9a4}
+.s-poor {background:#f8e3e0;color:#a3362a;border:1px solid #edbcb5}
+.bar-wrap{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:.8rem}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.soil-tips{display:flex;flex-direction:column;gap:6px}
 .soil-tip{
-font-size:13px;
-padding:10px 14px;
-border-radius:8px;
-background:#fff8e1;
-border-left:3px solid #ffc107;
-color:#5d4a00;
-display:flex;
-align-items:flex-start;
-gap:8px;
+  font-size:12px;padding:8px 11px;border-radius:6px;
+  background:var(--bg3);display:flex;align-items:flex-start;gap:8px;color:var(--muted);
+  border-left:2px solid var(--amber);
 }
+.soil-tip.ok{border-left-color:var(--green);color:var(--green2)}
 
-.soil-tip.ok{
-background:#e8f5e9;
-border-left-color:#4caf50;
-color:#1b5e20;
-}
-
-/* Comparison table */
-
-.cmp-section{
-margin-bottom:22px;
-}
-
-.cmp-title{
-font-size:13px;
-font-weight:600;
-color:#555;
-text-transform:uppercase;
-letter-spacing:.5px;
-margin-bottom:12px;
-}
-
-.cmp-table{
-width:100%;
-border-collapse:collapse;
-font-size:13px;
-}
-
+/* RESULT — COMPARISON TABLE */
+.cmp-section{padding:1.1rem 1.4rem;border-bottom:1px solid var(--line)}
+.cmp-title{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.cmp-table{width:100%;border-collapse:collapse;font-size:12px}
 .cmp-table th{
-text-align:left;
-font-weight:600;
-color:#888;
-padding:8px 6px;
-border-bottom:2px solid #e8f5e9;
-font-size:11px;
-text-transform:uppercase;
+  text-align:left;font-weight:500;color:var(--muted);
+  padding:5px 6px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.6px;
 }
+.cmp-table td{padding:6px 6px;vertical-align:middle}
+.cmp-table tr:not(:last-child) td{border-bottom:1px solid var(--bg3)}
+.cmp-param{color:var(--text);font-weight:500}
+.cmp-user{color:var(--text)}
+.cmp-ideal{color:var(--muted)}
+.cmp-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;}
+.st-good{background:#e4f4e6;color:#246633}
+.st-high{background:#f8e3e0;color:#a3362a}
+.st-low {background:#faf0db;color:#9a6a08}
 
-.cmp-table td{
-padding:9px 6px;
-border-bottom:1px solid #f0f4ec;
-}
-
-.cmp-param{ font-weight:600; color:#333; }
-.cmp-user{ color:#1b5e20; font-weight:500; }
-.cmp-ideal{ color:#999; }
-
-.cmp-status{
-display:inline-block;
-padding:3px 10px;
-border-radius:12px;
-font-size:11px;
-font-weight:600;
-}
-
-.st-good{ background:#dcedc8; color:#1b5e20; }
-.st-high{ background:#f8d7da; color:#842029; }
-.st-low{  background:#fff3cd; color:#856404; }
-
-/* Alternatives */
-
-.alts-section{ margin-bottom:10px; }
-
-.alts-title{
-font-size:13px;
-font-weight:600;
-color:#555;
-text-transform:uppercase;
-letter-spacing:.5px;
-margin-bottom:12px;
-}
-
-.alts-list{
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
+/* RESULT — ALTERNATIVES (with small thumbnails) */
+.alts-section{padding:1.1rem 1.4rem}
+.alts-title{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.alts-list{display:flex;flex-direction:column;gap:6px}
 .alt-row{
-display:flex;
-align-items:center;
-gap:12px;
-padding:10px 12px;
-background:#f5faf5;
-border-radius:10px;
-font-size:13px;
+  display:flex;align-items:center;gap:10px;
+  padding:6px 10px;border-radius:7px;background:var(--bg3);border:1px solid var(--line);
+  font-size:12px;
 }
-
-.alt-name{
-min-width:95px;
-font-weight:600;
-color:#333;
-text-transform:capitalize;
+.alt-row img{
+  width:26px;height:26px;border-radius:50%;object-fit:cover;
+  border:1px solid var(--line);background:#fff;flex-shrink:0;
 }
+.alt-bar-bg{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.alt-bar-fill{height:100%;background:var(--green2);border-radius:2px;transition:width .8s ease}
+.alt-pct{font-size:11px;color:var(--muted);min-width:30px;text-align:right}
+.alt-name{min-width:84px;color:var(--text);font-weight:500;text-transform:capitalize}
 
-.alt-bar-bg{
-flex:1;
-height:6px;
-background:#e0e0e0;
-border-radius:3px;
-overflow:hidden;
-}
-
-.alt-bar-fill{
-height:100%;
-background:linear-gradient(90deg,#2e7d32,#66bb6a);
-border-radius:3px;
-transition:width .8s ease;
-}
-
-.alt-pct{
-font-size:12px;
-color:#888;
-min-width:34px;
-text-align:right;
-font-weight:600;
-}
-
-/* Accuracy footer */
-
+/* ACCURACY FOOTER */
 .acc-footer{
-text-align:center;
-font-size:12px;
-color:#999;
-padding-top:18px;
-border-top:1px solid #f0f4ec;
-margin-top:18px;
+  font-size:11px;color:var(--muted2);text-align:center;
+  padding:.9rem;border-top:1px solid var(--line);
 }
+.acc-footer span{color:var(--green2);font-weight:600}
 
-.acc-footer b{ color:#2e7d32; }
-
-footer{
-background:#1b5e20;
-color:white;
-padding:25px;
-text-align:center;
+/* LOADING STATE */
+.loading{
+  padding:3.5rem 2rem;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1rem;
 }
-
-/* Responsive */
-
-@media(max-width:900px){
-.predict-wrap{ grid-template-columns:1fr; }
+.spin{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--line);border-top-color:var(--green);
+  animation:spin .75s linear infinite;
 }
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-lbl{font-size:12px;color:var(--muted)}
 
-@media(max-width:540px){
-.g3{ grid-template-columns:1fr 1fr; }
-.stat-grid{ grid-template-columns:1fr 1fr; }
-.page-header h1{ font-size:32px; }
-.header-stats{ gap:28px; }
+.result-wrap{animation:slideUp .35s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+@media(max-width:860px){
+  main{grid-template-columns:1fr}
 }
-
+@media(max-width:480px){
+  .g3,.g2{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .nav-pills .nav-pill:last-child{display:none}
+}
 </style>
 </head>
-
 <body>
 
+<!-- NAV -->
 <nav>
-
-<div class="logo">Crop Recommendation System</div>
-
-<ul>
-<li><a href="/">Home</a></li>
-<li><a href="/predict-page" class="active">Predict</a></li>
-<li><a href="/login">Login</a></li>
-<li><a href="/about">About</a></li>
-</ul>
-
+  <div class="brand">
+    <div class="brand-dot"></div>
+    Crop Recommendation System
+  </div>
+  <div class="nav-pills">
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ accuracy }}%</div>
+      <div class="nav-pill-lbl">Accuracy</div>
+    </div>
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ crop_count }}</div>
+      <div class="nav-pill-lbl">Crops</div>
+    </div>
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ total_samples }}</div>
+      <div class="nav-pill-lbl">Samples</div>
+    </div>
+  </div>
 </nav>
 
-<section class="page-header">
-<h1>Get Your Crop Recommendation</h1>
-<p>Enter your soil nutrients and climate conditions below. Our machine learning model, trained on {{ total_samples }} real field records across {{ crop_count }} crop types, will recommend the best crop for your land.</p>
-
-<div class="header-stats">
-<div class="hstat">
-<div class="hstat-val">{{ accuracy }}%</div>
-<div class="hstat-lbl">Accuracy</div>
-</div>
-<div class="hstat">
-<div class="hstat-val">{{ crop_count }}</div>
-<div class="hstat-lbl">Crops</div>
-</div>
-<div class="hstat">
-<div class="hstat-val">{{ total_samples }}</div>
-<div class="hstat-lbl">Samples</div>
-</div>
-</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-chip">Decision Tree · Scikit-learn · Real Dataset</div>
+  <h1>Crop Recommendation</h1>
+  <p class="hero-sub">Trained on {{ total_samples }} real field records across {{ crop_count }} crop types. Enter your soil and climate data for a prediction.</p>
+  <div class="hero-tags">
+    <div class="hero-tag">Nitrogen <b>N</b></div>
+    <div class="hero-tag">Phosphorus <b>P</b></div>
+    <div class="hero-tag">Potassium <b>K</b></div>
+    <div class="hero-tag">Temperature <b>°C</b></div>
+    <div class="hero-tag">Humidity <b>%</b></div>
+    <div class="hero-tag">Soil pH</div>
+    <div class="hero-tag">Rainfall <b>mm</b></div>
+  </div>
 </section>
 
-<div class="predict-wrap">
+<!-- MAIN -->
+<main>
 
-<!-- ── LEFT: INPUT PANEL ── -->
-<div class="panel">
+  <!-- LEFT: INPUTS -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="ph-title">Soil &amp; Climate Parameters</div>
+    </div>
+    <div class="panel-body">
 
-<div class="panel-title">
-<span>🧪</span>
-<h2>Soil & Climate Data</h2>
-</div>
+      <!-- Presets: all 22 crops, image left blank via src="" -->
+      <div class="sdiv">Quick presets</div>
+      <div class="presets">
+        <button class="preset" onclick="load('rice')"><img src="{{ url_for('static', filename='images/rice.jpeg') }}" alt="Rice">Rice</button>
+        <button class="preset" onclick="load('maize')"><img src="{{ url_for('static', filename='images/maize.jpg') }}" alt="Maize">Maize</button>
+        <button class="preset" onclick="load('chickpea')"><img src="{{ url_for('static', filename='images/cp.jpg.webp') }}" alt="Chickpea">Chickpea</button>
+        <button class="preset" onclick="load('kidneybeans')"><img src="{{ url_for('static', filename='images/kb.jpeg') }}" alt="Kidney Beans">Kidney Beans</button>
+        <button class="preset" onclick="load('pigeonpeas')"><img src="{{ url_for('static', filename='images/pep.jpg.webp') }}" alt="Pigeon Peas">Pigeon Peas</button>
+        <button class="preset" onclick="load('mothbeans')"><img src="{{ url_for('static', filename='images/mb.jpg.webp') }}" alt="Moth Beans">Moth Beans</button>
+        <button class="preset" onclick="load('mungbean')"><img src="{{ url_for('static', filename='images/mb.jpg.webp') }}" alt="Mung Bean">Mung Bean</button>
+        <button class="preset" onclick="load('blackgram')"><img src="{{ url_for('static', filename='images/bg.webp') }}" alt="Black Gram">Black Gram</button>
+        <button class="preset" onclick="load('lentil')"><img src="{{ url_for('static', filename='images/lentil.jpeg') }}" alt="Lentil">Lentil</button>
+        <button class="preset" onclick="load('pomegranate')"><img src="{{ url_for('static', filename='images/anar.jpg') }}" alt="Pomegranate">Pomegranate</button>
+        <button class="preset" onclick="load('banana')"><img src="{{ url_for('static', filename='images/banana.jpg.avif') }}" alt="Banana">Banana</button>
+        <button class="preset" onclick="load('mango')"><img src="{{ url_for('static', filename='images/mango.jpg') }}" alt="Mango">Mango</button>
+        <button class="preset" onclick="load('grapes')"><img src="{{ url_for('static', filename='images/grape.jpg.webp') }}" alt="Grapes">Grapes</button>
+        <button class="preset" onclick="load('watermelon')"><img src="{{ url_for('static', filename='images/watermelon.jpg') }}" alt="Watermelon">Watermelon</button>
+        <button class="preset" onclick="load('muskmelon')"><img src="{{ url_for('static', filename='images/muskmelon.jpg') }}" alt="Muskmelon">Muskmelon</button>
+        <button class="preset" onclick="load('apple')"><img src="{{ url_for('static', filename='images/apple.jpg.avif') }}" alt="Apple">Apple</button>
+        <button class="preset" onclick="load('orange')"><img src="{{ url_for('static', filename='images/orange.jpg') }}" alt="Orange">Orange</button>
+        <button class="preset" onclick="load('papaya')"><img src="{{ url_for('static', filename='images/papaya.webp')}} " alt="Papaya">Papaya</button>
+        <button class="preset" onclick="load('coconut')"><img src="{{ url_for('static', filename='images/coconut.jpg.webp') }}" alt="Coconut">Coconut</button>
+        <button class="preset" onclick="load('cotton')"><img src="{{ url_for('static', filename='images/cotton.jpg.webp') }}" alt="Cotton">Cotton</button>
+        <button class="preset" onclick="load('jute')"><img src="{{ url_for('static', filename='images/jute.jpg') }}" alt="Jute">Jute</button>
+        <button class="preset" onclick="load('coffee')"><img src="{{ url_for('static', filename='images/coffee.jpg') }}" alt="Coffee">Coffee</button>
+        <button class="preset reset-btn" onclick="resetForm()">Reset</button>
+      </div>
 
-<div class="sdiv">Quick presets</div>
-<div class="presets">
-<button class="preset-btn" onclick="load('rice')">🌾 Rice</button>
-<button class="preset-btn" onclick="load('maize')">🌽 Maize</button>
-<button class="preset-btn" onclick="load('cotton')">🪡 Cotton</button>
-<button class="preset-btn" onclick="load('mango')">🥭 Mango</button>
-<button class="preset-btn" onclick="load('coffee')">☕ Coffee</button>
-<button class="preset-btn" onclick="load('apple')">🍏 Apple</button>
-<button class="preset-btn" onclick="load('banana')">🍌 Banana</button>
-<button class="preset-btn" onclick="load('grapes')">🍇 Grapes</button>
-</div>
+      <!-- Nutrients -->
+      <div class="sdiv">Soil Nutrients (mg / kg)</div>
+      <div class="field-group g3">
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Nitrogen (N)</span>
+            <span class="field-val" id="dN">63<span class="field-unit">mg</span></span>
+          </div>
+          <input type="range" id="N" min="0" max="140" value="63" step="1" oninput="upd('N','dN','mg')">
+        </div>
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Phosphorus (P)</span>
+            <span class="field-val" id="dP">35<span class="field-unit">mg</span></span>
+          </div>
+          <input type="range" id="P" min="5" max="145" value="35" step="1" oninput="upd('P','dP','mg')">
+        </div>
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Potassium (K)</span>
+            <span class="field-val" id="dK">16<span class="field-unit">mg</span></span>
+          </div>
+          <input type="range" id="K" min="5" max="205" value="16" step="1" oninput="upd('K','dK','mg')">
+        </div>
+      </div>
 
-<div class="sdiv">Soil nutrients (mg/kg)</div>
-<div class="field-grid g3">
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Nitrogen (N)</span>
-<span class="field-val" id="dN">63<span>mg</span></span>
-</div>
-<input type="range" id="N" min="0" max="140" value="63" step="1" oninput="upd('N','dN','mg')">
-</div>
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Phosphorus (P)</span>
-<span class="field-val" id="dP">35<span>mg</span></span>
-</div>
-<input type="range" id="P" min="5" max="145" value="35" step="1" oninput="upd('P','dP','mg')">
-</div>
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Potassium (K)</span>
-<span class="field-val" id="dK">16<span>mg</span></span>
-</div>
-<input type="range" id="K" min="5" max="205" value="16" step="1" oninput="upd('K','dK','mg')">
-</div>
-</div>
+      <!-- Climate -->
+      <div class="sdiv">Climate Conditions</div>
+      <div class="field-group g2">
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Temperature</span>
+            <span class="field-val" id="dT">22.0<span class="field-unit">°C</span></span>
+          </div>
+          <input type="range" id="temperature" min="8" max="44" value="22" step="0.5" oninput="upd('temperature','dT','°C')">
+        </div>
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Humidity</span>
+            <span class="field-val" id="dH">65<span class="field-unit">%</span></span>
+          </div>
+          <input type="range" id="humidity" min="14" max="100" value="65" step="1" oninput="upd('humidity','dH','%')">
+        </div>
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Rainfall</span>
+            <span class="field-val" id="dR">84<span class="field-unit">mm</span></span>
+          </div>
+          <input type="range" id="rainfall" min="20" max="299" value="84" step="1" oninput="upd('rainfall','dR','mm')">
+        </div>
+        <div class="field">
+          <div class="field-top">
+            <span class="field-lbl">Soil pH</span>
+            <span class="field-val" id="dPH">6.3<span class="field-unit">pH</span></span>
+          </div>
+          <input type="range" id="ph" min="3.5" max="9.5" value="6.3" step="0.1" oninput="upd('ph','dPH','pH')">
+        </div>
+      </div>
 
-<div class="sdiv">Climate conditions</div>
-<div class="field-grid g2">
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Temperature</span>
-<span class="field-val" id="dT">22.0<span>°C</span></span>
-</div>
-<input type="range" id="temperature" min="8" max="44" value="22" step="0.5" oninput="upd('temperature','dT','°C')">
-</div>
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Humidity</span>
-<span class="field-val" id="dH">65<span>%</span></span>
-</div>
-<input type="range" id="humidity" min="14" max="100" value="65" step="1" oninput="upd('humidity','dH','%')">
-</div>
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Rainfall</span>
-<span class="field-val" id="dR">84<span>mm</span></span>
-</div>
-<input type="range" id="rainfall" min="20" max="299" value="84" step="1" oninput="upd('rainfall','dR','mm')">
-</div>
-<div class="field">
-<div class="field-top">
-<span class="field-lbl">Soil pH</span>
-<span class="field-val" id="dPH">6.3<span>pH</span></span>
-</div>
-<input type="range" id="ph" min="3.5" max="9.5" value="6.3" step="0.1" oninput="upd('ph','dPH','pH')">
-</div>
-</div>
+      <button class="predict-btn" id="btn" onclick="predict()">
+        Analyse &amp; Recommend Crop
+      </button>
+    </div>
+  </div>
 
-<button class="predict-btn" id="btn" onclick="predict()">🌱 Analyse & Recommend Crop</button>
+  <!-- RIGHT: RESULT -->
+  <div class="panel" id="result">
+    <div class="panel-head">
+      <div class="ph-title">Recommendation</div>
+    </div>
+    <div class="empty-state">
+      <p class="empty-txt">Adjust the parameters on the left and click <strong>Analyse</strong> to get your personalised crop recommendation.</p>
+    </div>
+  </div>
 
-</div>
-
-<!-- ── RIGHT: RESULT PANEL ── -->
-<div class="panel result-panel" id="result">
-
-<div class="panel-title">
-<span>📊</span>
-<h2>Recommendation</h2>
-</div>
-
-<div class="empty-state">
-<span class="emoji">🌾</span>
-<p>Adjust the sliders on the left and click <strong>Analyse</strong> to get your personalised crop recommendation.</p>
-</div>
-
-</div>
-
-</div>
-
-<footer>
-© 2026 CropSense | Smart Crop Recommendation System
-</footer>
+</main>
 
 <script>
+/* ── Presets from real dataset means (key = crop image filename without extension) ── */
 const PRESETS = {
-  rice:    {N:80, P:47, K:40, temperature:23.7, humidity:82.3, ph:6.5,  rainfall:236.2},
-  maize:   {N:88, P:42, K:44, temperature:22.6, humidity:65.1, ph:6.2,  rainfall:84.8},
-  cotton:  {N:118,P:46, K:20, temperature:23.9, humidity:79.8, ph:6.9,  rainfall:80.4},
-  mango:   {N:20, P:27, K:30, temperature:31.2, humidity:50.1, ph:5.77, rainfall:94.5},
-  coffee:  {N:101,P:29, K:30, temperature:25.5, humidity:58.9, ph:6.5,  rainfall:158.1},
-  apple:   {N:21, P:134,K:200,temperature:22.6, humidity:92.3, ph:5.93, rainfall:112.6},
-  banana:  {N:100,P:82, K:50, temperature:27.4, humidity:80.4, ph:5.98, rainfall:104.6},
-  grapes:  {N:23, P:23, K:38, temperature:23.9, humidity:81.7, ph:6.0,  rainfall:69.6},
+  rice:        {N:80, P:47, K:40, temperature:23.7, humidity:82.3, ph:6.5,  rainfall:236.2},
+  maize:       {N:88, P:42, K:44, temperature:22.6, humidity:65.1, ph:6.2,  rainfall:84.8},
+  chickpea:    {N:40, P:67, K:80, temperature:18.9, humidity:16.9, ph:7.3,  rainfall:80.1},
+  kidneybeans: {N:21, P:67, K:20, temperature:20.1, humidity:21.6, ph:5.75, rainfall:105.9},
+  pigeonpeas:  {N:21, P:67, K:20, temperature:27.7, humidity:48.1, ph:5.79, rainfall:149.5},
+  mothbeans:   {N:21, P:48, K:20, temperature:28.2, humidity:53.2, ph:6.85, rainfall:51.2},
+  mungbean:    {N:21, P:47, K:20, temperature:28.5, humidity:85.5, ph:6.7,  rainfall:48.4},
+  blackgram:   {N:40, P:67, K:19, temperature:29.9, humidity:65.1, ph:7.13, rainfall:67.9},
+  lentil:      {N:19, P:68, K:19, temperature:24.5, humidity:64.8, ph:6.9,  rainfall:45.7},
+  pomegranate: {N:19, P:18, K:40, temperature:21.8, humidity:90.1, ph:6.43, rainfall:107.5},
+  banana:      {N:100,P:82, K:50, temperature:27.4, humidity:80.4, ph:5.98, rainfall:104.6},
+  mango:       {N:20, P:27, K:30, temperature:31.2, humidity:50.1, ph:5.77, rainfall:94.5},
+  grapes:      {N:23, P:23, K:38, temperature:23.9, humidity:81.7, ph:6.0,  rainfall:69.6},
+  watermelon:  {N:99, P:17, K:50, temperature:25.6, humidity:85.2, ph:6.5,  rainfall:50.8},
+  muskmelon:   {N:100,P:17, K:50, temperature:28.7, humidity:92.3, ph:6.36, rainfall:24.7},
+  apple:       {N:21, P:134,K:200,temperature:22.6, humidity:92.3, ph:5.93, rainfall:112.6},
+  orange:      {N:19, P:16, K:10, temperature:22.8, humidity:92.2, ph:7.02, rainfall:110.5},
+  papaya:      {N:50, P:59, K:50, temperature:33.7, humidity:92.4, ph:6.74, rainfall:142.6},
+  coconut:     {N:22, P:17, K:30, temperature:27.4, humidity:94.8, ph:5.98, rainfall:175.7},
+  cotton:      {N:118,P:46, K:20, temperature:23.9, humidity:79.8, ph:6.9,  rainfall:80.4},
+  jute:        {N:78, P:47, K:40, temperature:24.9, humidity:79.6, ph:6.73, rainfall:174.8},
+  coffee:      {N:101,P:29, K:30, temperature:25.5, humidity:58.9, ph:6.5,  rainfall:158.1},
 };
 
 function upd(id, dispId, unit) {
   const v = parseFloat(document.getElementById(id).value);
   const prec = (unit === '°C' || unit === 'pH') ? 1 : 0;
   document.getElementById(dispId).innerHTML =
-    v.toFixed(prec) + '<span>' + unit + '</span>';
+    v.toFixed(prec) + '<span class="field-unit">' + unit + '</span>';
 }
 
 function load(key) {
@@ -817,6 +503,8 @@ function load(key) {
   upd('temperature','dT','°C'); upd('humidity','dH','%');
   upd('rainfall','dR','mm'); upd('ph','dPH','pH');
 }
+
+function resetForm() { load('rice'); }
 
 function getVals() {
   return {
@@ -833,98 +521,104 @@ function getVals() {
 function scoreClass(s) { return s >= 75 ? 's-great' : s >= 50 ? 's-ok' : 's-poor'; }
 function scoreLabel(s) { return s >= 75 ? 'Excellent' : s >= 50 ? 'Fair' : 'Poor'; }
 function barColor(s)   { return s >= 75
-  ? 'background:linear-gradient(90deg,#1b5e20,#66bb6a)'
+  ? 'background:#2f7d3f'
   : s >= 50
-  ? 'background:linear-gradient(90deg,#b8860b,#ffc107)'
-  : 'background:linear-gradient(90deg,#a51c30,#f87171)'; }
+  ? 'background:#c9971f'
+  : 'background:#c0392b'; }
 
-const EM = {rice:'🌾',maize:'🌽',chickpea:'🫘',kidneybeans:'🫘',pigeonpeas:'🫘',mothbeans:'🫘',mungbean:'🫘',blackgram:'🫘',lentil:'🫘',pomegranate:'🍎',banana:'🍌',mango:'🥭',grapes:'🍇',watermelon:'🍉',muskmelon:'🍈',apple:'🍏',orange:'🍊',papaya:'🍑',coconut:'🥥',cotton:'🪡',jute:'🌿',coffee:'☕'};
+/* Converts a crop name returned by the backend into the image filename
+   you have stored in crop_recommend/static/images/ — adjust this if your
+   filenames use a different convention (e.g. capitalised, .png, etc.) */
+function cropImgPath(cropName) {
+  const key = cropName.toLowerCase().replace(/\s+/g, '');
+  return `/static/images/${key}.jpg`; // leave blank / change extension as needed
+}
 
 function render(d) {
   const tips = d.soil_tips.length
     ? d.soil_tips.map(t => `<div class="soil-tip">${t.icon} ${t.msg}</div>`).join('')
-    : `<div class="soil-tip ok">✅ Soil nutrients are well-balanced for ${d.crop}.</div>`;
+    : `<div class="soil-tip ok">Soil nutrients are well-balanced for ${d.crop}.</div>`;
 
   const cmpRows = d.comparison.map(p => `
     <tr>
       <td class="cmp-param">${p.name}</td>
       <td class="cmp-user">${p.user}${p.unit}</td>
       <td class="cmp-ideal">${p.ideal}${p.unit}</td>
-      <td><span class="cmp-status st-${p.status}">${p.status === 'good' ? '✓ Good' : p.status === 'high' ? '↑ High' : '↓ Low'}</span></td>
+      <td><span class="cmp-status st-${p.status}">${p.status === 'good' ? 'Good' : p.status === 'high' ? 'High' : 'Low'}</span></td>
     </tr>`).join('');
 
   const alts = d.alternatives.length
     ? d.alternatives.map(a => `
         <div class="alt-row">
-          <span style="font-size:18px">${EM[a.crop]||'🌱'}</span>
+          <img src="${cropImgPath(a.crop)}" alt="${a.crop}">
           <span class="alt-name">${a.crop}</span>
           <div class="alt-bar-bg"><div class="alt-bar-fill" style="width:${a.pct}%"></div></div>
           <span class="alt-pct">${a.pct}%</span>
         </div>`).join('')
-    : '<span style="font-size:12px;color:#999">None found</span>';
+    : '<span style="font-size:12px;color:var(--muted)">None found</span>';
 
   document.getElementById('result').innerHTML = `
-    <div class="panel-title">
-      <span>📊</span>
-      <h2>Recommendation</h2>
+    <div class="panel-head">
+      <div class="ph-title">Recommendation</div>
     </div>
+    <div class="result-wrap">
 
-    <div class="crop-hero">
-      <span class="crop-emoji">${d.emoji}</span>
-      <div class="crop-name">${d.crop}</div>
-      <div class="crop-chips">
-        <span class="crop-chip">🌿 ${d.season} Season</span>
-        <span class="crop-chip">💧 ${d.water} Water</span>
+      <div class="crop-hero">
+        <img class="crop-img" src="${cropImgPath(d.crop)}" alt="${d.crop}">
+        <div class="crop-name">${d.crop}</div>
+        <div class="crop-chips">
+          <span class="crop-chip">${d.season} Season</span>
+          <span class="crop-chip">${d.water} Water</span>
+        </div>
       </div>
-    </div>
 
-    <div class="stat-grid">
-      <div class="stat-cell"><div class="stat-lbl">Temp</div><div class="stat-val">${d.inputs.temperature.toFixed(1)}°C</div></div>
-      <div class="stat-cell"><div class="stat-lbl">Humidity</div><div class="stat-val">${d.inputs.humidity.toFixed(0)}%</div></div>
-      <div class="stat-cell"><div class="stat-lbl">Rainfall</div><div class="stat-val">${d.inputs.rainfall.toFixed(0)}mm</div></div>
-      <div class="stat-cell"><div class="stat-lbl">pH</div><div class="stat-val">${d.inputs.ph.toFixed(1)}</div></div>
-    </div>
-
-    <div class="soil-section">
-      <div class="soil-head">
-        <span class="soil-title">Soil Health</span>
-        <span class="soil-badge ${scoreClass(d.soil_score)}">${scoreLabel(d.soil_score)} · ${d.soil_score}%</span>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-lbl">Temperature</div><div class="stat-val">${d.inputs.temperature.toFixed(1)} °C</div></div>
+        <div class="stat-cell"><div class="stat-lbl">Humidity</div><div class="stat-val">${d.inputs.humidity.toFixed(0)}%</div></div>
+        <div class="stat-cell"><div class="stat-lbl">Rainfall</div><div class="stat-val">${d.inputs.rainfall.toFixed(0)} mm</div></div>
+        <div class="stat-cell"><div class="stat-lbl">Soil pH</div><div class="stat-val">${d.inputs.ph.toFixed(1)}</div></div>
       </div>
-      <div class="bar-wrap">
-        <div class="bar-fill" style="width:${d.soil_score}%;${barColor(d.soil_score)}"></div>
+
+      <div class="soil-section">
+        <div class="soil-head">
+          <span class="soil-title">Soil Health</span>
+          <span class="soil-badge ${scoreClass(d.soil_score)}">${scoreLabel(d.soil_score)} · ${d.soil_score}%</span>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-fill" style="width:${d.soil_score}%;${barColor(d.soil_score)}"></div>
+        </div>
+        <div class="soil-tips">${tips}</div>
       </div>
-      <div class="soil-tips">${tips}</div>
-    </div>
 
-    <div class="cmp-section">
-      <div class="cmp-title">Your values vs. ideal for ${d.crop}</div>
-      <table class="cmp-table">
-        <thead><tr><th>Parameter</th><th>Your Input</th><th>Ideal Avg</th><th>Status</th></tr></thead>
-        <tbody>${cmpRows}</tbody>
-      </table>
-    </div>
+      <div class="cmp-section">
+        <div class="cmp-title">Your values vs. ideal for ${d.crop}</div>
+        <table class="cmp-table">
+          <thead><tr><th>Parameter</th><th>Your Input</th><th>Ideal Avg</th><th>Status</th></tr></thead>
+          <tbody>${cmpRows}</tbody>
+        </table>
+      </div>
 
-    <div class="alts-section">
-      <div class="alts-title">Also Suitable</div>
-      <div class="alts-list">${alts}</div>
-    </div>
+      <div class="alts-section">
+        <div class="alts-title">Also Suitable (Leaf Node)</div>
+        <div class="alts-list">${alts}</div>
+      </div>
 
-    <div class="acc-footer">
-      Model accuracy: <b>${d.model_accuracy}%</b> · DecisionTreeClassifier · sklearn
-    </div>
-  `;
+      <div class="acc-footer">
+        Model accuracy: <span>${d.model_accuracy}%</span> ·
+        DecisionTreeClassifier · sklearn ·
+        <span>{{ total_samples }}</span> samples
+      </div>
+
+    </div>`;
 }
 
 async function predict() {
   const btn = document.getElementById('btn');
   btn.disabled = true;
-  btn.textContent = '🔬 Running model…';
+  btn.textContent = 'Running model…';
   document.getElementById('result').innerHTML = `
-    <div class="panel-title"><span>📊</span><h2>Recommendation</h2></div>
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Running decision tree…</p>
-    </div>`;
+    <div class="panel-head"><div class="ph-title">Recommendation</div></div>
+    <div class="loading"><div class="spin"></div><div class="loading-lbl">Running decision tree…</div></div>`;
 
   try {
     const res = await fetch('/predict', {
@@ -937,17 +631,14 @@ async function predict() {
     render(data);
   } catch (e) {
     document.getElementById('result').innerHTML = `
-      <div class="panel-title"><span>📊</span><h2>Recommendation</h2></div>
+      <div class="panel-head"><div class="ph-title">Recommendation</div></div>
       <div class="empty-state">
-        <span class="emoji">⚠️</span>
-        <p>${e.message || 'Something went wrong. Please try again.'}</p>
-      </div>`;
+      <p class="empty-txt">${e.message || 'Something went wrong. Please try again.'}</p></div>`;
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '🌱 Analyse & Recommend Crop';
+    btn.innerHTML = 'Analyse &amp; Recommend Crop';
   }
 }
 </script>
-
 </body>
 </html>
