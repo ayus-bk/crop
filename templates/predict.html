@@ -3,525 +3,791 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crop Recommendation System</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Predict | Crop Recommendation System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-/* ═══════════════════════════════════════════════
-   TOKENS & RESET
-═══════════════════════════════════════════════ */
-:root {
-  --bg:      #0b1a10;
-  --bg2:     #0f2215;
-  --bg3:     #122619;
-  --card:    #152d1c;
-  --card2:   #1a3522;
-  --line:    rgba(74,222,128,.10);
-  --line2:   rgba(74,222,128,.22);
-  --green:   #4ade80;
-  --green2:  #86efac;
-  --green3:  #15803d;
-  --amber:   #fbbf24;
-  --red:     #f87171;
-  --sky:     #38bdf8;
-  --text:    #e8f5ec;
-  --muted:   #5d8a65;
-  --muted2:  #3a5e40;
-  --r:       14px;
-  --rsm:     8px;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+
 body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
+background:#f5faf5;
+color:#333;
 }
 
-/* ═══════════════════════════════════════════════
-   AMBIENT BACKGROUND
-═══════════════════════════════════════════════ */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 55% 35% at 15% 5%,  rgba(74,222,128,.05)  0%,transparent 60%),
-    radial-gradient(ellipse 40% 50% at 85% 90%, rgba(251,191,36,.04)  0%,transparent 60%),
-    radial-gradient(ellipse 30% 30% at 70% 20%, rgba(56,189,248,.03)  0%,transparent 50%);
-}
+/* Navigation — identical to homepage */
 
-/* ═══════════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════════ */
 nav{
-  position:sticky;top:0;z-index:200;
-  background:rgba(11,26,16,.88);backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line);
-  padding:0 2rem;height:58px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.brand{
-  font-family:'Lora',serif;font-size:20px;font-weight:600;
-  color:var(--green);display:flex;align-items:center;gap:9px;letter-spacing:.3px;
-}
-.brand-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--green);animation:pulse 2.5s ease infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.nav-pills{display:flex;gap:1.5rem}
-.nav-pill{text-align:center}
-.nav-pill-val{font-size:14px;font-weight:600;color:var(--green2)}
-.nav-pill-lbl{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-top:1px}
-
-/* ═══════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════ */
-.hero{
-  position:relative;z-index:1;
-  padding:4.5rem 2rem 2.5rem;text-align:center;
-}
-.hero-chip{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:11px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--green);padding:6px 18px;
-  background:rgba(74,222,128,.08);
-  border:1px solid var(--line2);border-radius:30px;
-  margin-bottom:1.4rem;
-}
-.hero h1{
-  font-family:'Lora',serif;
-  font-size:clamp(32px,5.5vw,62px);
-  font-weight:600;line-height:1.1;
-  margin-bottom:1rem;
-  background:linear-gradient(140deg,#dcfce7 0%,#4ade80 45%,#fbbf24 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-sub{
-  font-size:15px;color:var(--muted);font-weight:300;
-  line-height:1.8;max-width:520px;margin:0 auto 2rem;
-}
-.hero-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.hero-tag{
-  font-size:12px;padding:5px 14px;border-radius:6px;
-  background:var(--card);border:1px solid var(--line);
-  color:var(--muted);
-}
-.hero-tag b{color:var(--green2);font-weight:500}
-
-/* ═══════════════════════════════════════════════
-   MAIN GRID
-═══════════════════════════════════════════════ */
-main{
-  position:relative;z-index:1;
-  max-width:1120px;margin:0 auto;
-  padding:0 1.5rem 5rem;
-  display:grid;
-  grid-template-columns:1fr 430px;
-  gap:1.5rem;align-items:start;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:#1b5e20;
+color:white;
+position:sticky;
+top:0;
+z-index:100;
 }
 
-/* ═══════════════════════════════════════════════
-   PANEL
-═══════════════════════════════════════════════ */
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+nav ul li a:hover{
+color:#90ee90;
+}
+
+nav ul li a.active{
+color:#90ee90;
+border-bottom:2px solid #90ee90;
+padding-bottom:4px;
+}
+
+/* Page header band — same gradient family as hero */
+
+.page-header{
+padding:60px 8% 50px;
+background:linear-gradient(135deg,#2e7d32,#66bb6a);
+color:white;
+text-align:center;
+}
+
+.page-header h1{
+font-size:42px;
+margin-bottom:14px;
+}
+
+.page-header p{
+font-size:17px;
+line-height:1.8;
+max-width:640px;
+margin:0 auto;
+opacity:.95;
+}
+
+.header-stats{
+display:flex;
+justify-content:center;
+gap:50px;
+margin-top:35px;
+flex-wrap:wrap;
+}
+
+.hstat{
+text-align:center;
+}
+
+.hstat-val{
+font-size:26px;
+font-weight:700;
+}
+
+.hstat-lbl{
+font-size:12px;
+letter-spacing:1px;
+text-transform:uppercase;
+opacity:.85;
+margin-top:2px;
+}
+
+/* Main two-column layout */
+
+.predict-wrap{
+max-width:1150px;
+margin:0 auto;
+padding:60px 8% 90px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+align-items:start;
+}
+
+/* Cards — same style as homepage .card */
+
 .panel{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--r);overflow:hidden;
+background:white;
+padding:35px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.1);
 }
-.panel-head{
-  padding:1rem 1.4rem;
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;
-}
-.ph-icon{
-  width:30px;height:30px;border-radius:7px;
-  background:rgba(74,222,128,.12);
-  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
-}
-.ph-title{font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--green2)}
-.panel-body{padding:1.4rem}
 
-/* ═══════════════════════════════════════════════
-   SECTION DIVIDER
-═══════════════════════════════════════════════ */
+.panel-title{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:25px;
+}
+
+.panel-title span{
+font-size:26px;
+}
+
+.panel-title h2{
+font-size:22px;
+color:#1b5e20;
+}
+
+/* Presets — pill buttons matching .btn style */
+
+.presets{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:30px;
+}
+
+.preset-btn{
+padding:8px 18px;
+background:#e8f5e9;
+color:#1b5e20;
+border:1px solid #c8e6c9;
+border-radius:30px;
+font-size:13px;
+font-weight:500;
+cursor:pointer;
+transition:.3s;
+font-family:'Poppins',sans-serif;
+}
+
+.preset-btn:hover{
+background:#2e7d32;
+color:white;
+}
+
+/* Section divider */
+
 .sdiv{
-  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-  display:flex;align-items:center;gap:10px;margin-bottom:.9rem;
+font-size:12px;
+font-weight:600;
+letter-spacing:1px;
+text-transform:uppercase;
+color:#2e7d32;
+margin:25px 0 15px;
+display:flex;
+align-items:center;
+gap:10px;
 }
-.sdiv::after{content:'';flex:1;height:1px;background:var(--line)}
 
-/* ═══════════════════════════════════════════════
-   PRESETS
-═══════════════════════════════════════════════ */
-.presets{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.4rem}
-.preset{
-  padding:5px 13px;border-radius:7px;font-size:12px;font-weight:500;
-  background:var(--bg3);border:1px solid var(--line);
-  cursor:pointer;color:var(--muted);
-  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;
+.sdiv::after{
+content:'';
+flex:1;
+height:1px;
+background:#dcedc8;
 }
-.preset:hover{background:var(--card2);border-color:var(--line2);color:var(--green2)}
 
-/* ═══════════════════════════════════════════════
-   SLIDERS
-═══════════════════════════════════════════════ */
-.field-group{display:grid;gap:1rem;margin-bottom:1.4rem}
-.g3{grid-template-columns:1fr 1fr 1fr}
-.g2{grid-template-columns:1fr 1fr}
+.sdiv:first-child{ margin-top:0; }
 
+/* Field grids */
 
-.field-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.field-lbl{font-size:11px;font-weight:500;letter-spacing:.4px;color:var(--muted)}
+.field-grid{
+display:grid;
+gap:18px;
+margin-bottom:10px;
+}
+
+.g3{ grid-template-columns:repeat(3,1fr); }
+.g2{ grid-template-columns:repeat(2,1fr); }
+
+.field-top{
+display:flex;
+justify-content:space-between;
+align-items:baseline;
+margin-bottom:8px;
+}
+
+.field-lbl{
+font-size:13px;
+font-weight:500;
+color:#555;
+}
+
 .field-val{
-  font-family:'Lora',serif;font-size:17px;font-weight:500;color:var(--green);
-  line-height:1;
+font-size:16px;
+font-weight:600;
+color:#2e7d32;
 }
-.field-unit{font-size:10px;color:var(--muted);font-weight:400;margin-left:2px}
+
+.field-val span{
+font-size:11px;
+font-weight:400;
+color:#888;
+margin-left:2px;
+}
 
 input[type=range]{
-  width:100%;height:4px;border-radius:2px;
-  -webkit-appearance:none;appearance:none;
-  background:var(--bg);outline:none;cursor:pointer;
+width:100%;
+height:6px;
+border-radius:3px;
+-webkit-appearance:none;
+appearance:none;
+background:#dcedc8;
+outline:none;
+cursor:pointer;
 }
-input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--bg3)}
+
 input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:15px;height:15px;border-radius:50%;
-  background:var(--green);border:2px solid var(--bg);cursor:pointer;margin-top:-5.5px;
-  transition:transform .15s;
+-webkit-appearance:none;
+width:18px;
+height:18px;
+border-radius:50%;
+background:#2e7d32;
+border:3px solid white;
+box-shadow:0 2px 6px rgba(0,0,0,.25);
+cursor:pointer;
+transition:.2s;
 }
-input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.2)}
 
-/* ═══════════════════════════════════════════════
-   PREDICT BUTTON
-═══════════════════════════════════════════════ */
+input[type=range]::-webkit-slider-thumb:hover{
+transform:scale(1.15);
+background:#1b5e20;
+}
+
+input[type=range]::-moz-range-thumb{
+width:18px;
+height:18px;
+border-radius:50%;
+background:#2e7d32;
+border:3px solid white;
+box-shadow:0 2px 6px rgba(0,0,0,.25);
+cursor:pointer;
+}
+
+/* Predict button — same pill style as homepage .btn but solid green */
+
 .predict-btn{
-  width:100%;padding:15px;
-  border-radius:var(--rsm);border:none;cursor:pointer;
-  font-family:'Lora',serif;font-size:18px;font-weight:600;
-  background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%);
-  color:#fff;transition:all .3s;position:relative;overflow:hidden;letter-spacing:.3px;
-  margin-top:.5rem;
+width:100%;
+padding:16px;
+margin-top:20px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:30px;
+font-size:17px;
+font-weight:600;
+font-family:'Poppins',sans-serif;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 8px 20px rgba(46,125,50,.25);
 }
-.predict-btn::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
-  transform:translateX(-100%);transition:transform .6s;
-}
-.predict-btn:hover::after{transform:translateX(100%)}
-.predict-btn:hover{box-shadow:0 6px 28px rgba(74,222,128,.25);transform:translateY(-2px)}
-.predict-btn:active{transform:translateY(0)}
-.predict-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* ═══════════════════════════════════════════════
-   RESULT PANEL — EMPTY STATE
-═══════════════════════════════════════════════ */
+.predict-btn:hover{
+background:#1b5e20;
+transform:translateY(-2px);
+box-shadow:0 10px 24px rgba(46,125,50,.35);
+}
+
+.predict-btn:active{
+transform:translateY(0);
+}
+
+.predict-btn:disabled{
+opacity:.6;
+cursor:not-allowed;
+transform:none;
+}
+
+/* ── RESULT PANEL ── */
+
+.result-panel{
+min-height:200px;
+}
+
 .empty-state{
-  padding:3.5rem 2rem;text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:.8rem;
+text-align:center;
+padding:60px 20px;
+color:#888;
 }
-.empty-icon{font-size:52px;opacity:.3}
-.empty-txt{font-size:13px;color:var(--muted);line-height:1.8;max-width:220px}
 
-/* ═══════════════════════════════════════════════
-   RESULT — CROP HERO
-═══════════════════════════════════════════════ */
+.empty-state .emoji{
+font-size:54px;
+margin-bottom:15px;
+display:block;
+opacity:.5;
+}
+
+.empty-state p{
+font-size:15px;
+line-height:1.7;
+max-width:280px;
+margin:0 auto;
+}
+
+.loading-state{
+text-align:center;
+padding:70px 20px;
+}
+
+.spinner{
+width:40px;
+height:40px;
+border:4px solid #dcedc8;
+border-top-color:#2e7d32;
+border-radius:50%;
+margin:0 auto 18px;
+animation:spin .8s linear infinite;
+}
+
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.loading-state p{
+color:#2e7d32;
+font-weight:500;
+animation:blink 1.3s ease infinite;
+}
+
+@keyframes blink{ 0%,100%{opacity:.5} 50%{opacity:1} }
+
+/* Crop hero result */
+
 .crop-hero{
-  padding:2rem 1.5rem 1.5rem;text-align:center;
-  border-bottom:1px solid var(--line);
-  position:relative;overflow:hidden;
+text-align:center;
+padding:10px 0 25px;
+border-bottom:2px solid #e8f5e9;
+margin-bottom:22px;
+animation:fadeUp .4s ease;
 }
-.crop-glow{
-  position:absolute;top:-60px;left:50%;transform:translateX(-50%);
-  width:260px;height:260px;border-radius:50%;
-  background:radial-gradient(circle,var(--ccolor,#4ade80) 0%,transparent 70%);
-  opacity:.07;pointer-events:none;
+
+@keyframes fadeUp{
+from{ opacity:0; transform:translateY(14px); }
+to{ opacity:1; transform:none; }
 }
+
 .crop-emoji{
-  font-size:60px;margin-bottom:.4rem;display:block;
-  filter:drop-shadow(0 3px 10px var(--ccolor,#4ade80));
-  animation:floatIn .5s ease;
+font-size:64px;
+display:block;
+margin-bottom:8px;
 }
-@keyframes floatIn{from{opacity:0;transform:translateY(16px) scale(.8)}to{opacity:1;transform:none}}
+
 .crop-name{
-  font-family:'Lora',serif;font-size:34px;font-weight:600;
-  text-transform:capitalize;
-  background:linear-gradient(135deg,var(--text),var(--ccolor,#4ade80));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:.7rem;
+font-size:32px;
+font-weight:700;
+color:#1b5e20;
+text-transform:capitalize;
+margin-bottom:12px;
 }
-.crop-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+
+.crop-chips{
+display:flex;
+gap:10px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
 .crop-chip{
-  padding:4px 13px;border-radius:20px;font-size:11px;font-weight:500;
-  background:rgba(74,222,128,.1);border:1px solid var(--line2);color:var(--green2);
+padding:6px 16px;
+background:#e8f5e9;
+color:#2e7d32;
+border-radius:20px;
+font-size:12px;
+font-weight:600;
 }
 
-/* ═══════════════════════════════════════════════
-   RESULT — QUICK STATS GRID
-═══════════════════════════════════════════════ */
+/* Stat grid */
+
 .stat-grid{
-  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
-  gap:1px;background:var(--line);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-bottom:22px;
 }
+
 .stat-cell{
-  background:var(--card);padding:.9rem 1rem;
+background:#f5faf5;
+border-radius:10px;
+padding:12px 8px;
+text-align:center;
 }
-.stat-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.stat-val{font-size:14px;font-weight:600;color:var(--text);margin-top:3px}
 
-/* ═══════════════════════════════════════════════
-   RESULT — SOIL HEALTH
-═══════════════════════════════════════════════ */
-.soil-section{padding:1.2rem 1.4rem;border-bottom:1px solid var(--line)}
-.soil-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
-.soil-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.stat-lbl{
+font-size:10px;
+color:#888;
+text-transform:uppercase;
+letter-spacing:.5px;
+}
+
+.stat-val{
+font-size:15px;
+font-weight:700;
+color:#1b5e20;
+margin-top:4px;
+}
+
+/* Soil health */
+
+.soil-section{
+margin-bottom:22px;
+}
+
+.soil-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+}
+
+.soil-title{
+font-size:13px;
+font-weight:600;
+color:#555;
+text-transform:uppercase;
+letter-spacing:.5px;
+}
+
 .soil-badge{
-  font-size:12px;font-weight:600;padding:3px 11px;border-radius:20px;
+font-size:12px;
+font-weight:700;
+padding:4px 14px;
+border-radius:20px;
 }
-.s-great{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
-.s-ok   {background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
-.s-poor {background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
-.bar-wrap{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:.9rem}
-.bar-fill{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
-.soil-tips{display:flex;flex-direction:column;gap:6px}
+
+.s-great{ background:#dcedc8; color:#1b5e20; }
+.s-ok{    background:#fff3cd; color:#856404; }
+.s-poor{  background:#f8d7da; color:#842029; }
+
+.bar-wrap{
+height:8px;
+background:#e8f5e9;
+border-radius:4px;
+overflow:hidden;
+margin-bottom:14px;
+}
+
+.bar-fill{
+height:100%;
+border-radius:4px;
+transition:width 1s ease;
+}
+
+.soil-tips{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
 .soil-tip{
-  font-size:12px;padding:8px 11px;border-radius:6px;
-  background:var(--bg3);display:flex;align-items:flex-start;gap:8px;color:var(--muted);
-  border-left:2px solid var(--amber);
+font-size:13px;
+padding:10px 14px;
+border-radius:8px;
+background:#fff8e1;
+border-left:3px solid #ffc107;
+color:#5d4a00;
+display:flex;
+align-items:flex-start;
+gap:8px;
 }
-.soil-tip.ok{border-left-color:var(--green);color:var(--green2)}
 
-/* ═══════════════════════════════════════════════
-   RESULT — COMPARISON TABLE
-═══════════════════════════════════════════════ */
-.cmp-section{padding:1.2rem 1.4rem;border-bottom:1px solid var(--line)}
-.cmp-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
-.cmp-table{width:100%;border-collapse:collapse;font-size:12px}
+.soil-tip.ok{
+background:#e8f5e9;
+border-left-color:#4caf50;
+color:#1b5e20;
+}
+
+/* Comparison table */
+
+.cmp-section{
+margin-bottom:22px;
+}
+
+.cmp-title{
+font-size:13px;
+font-weight:600;
+color:#555;
+text-transform:uppercase;
+letter-spacing:.5px;
+margin-bottom:12px;
+}
+
+.cmp-table{
+width:100%;
+border-collapse:collapse;
+font-size:13px;
+}
+
 .cmp-table th{
-  text-align:left;font-weight:500;color:var(--muted);
-  padding:5px 6px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.8px;
+text-align:left;
+font-weight:600;
+color:#888;
+padding:8px 6px;
+border-bottom:2px solid #e8f5e9;
+font-size:11px;
+text-transform:uppercase;
 }
-.cmp-table td{padding:6px 6px;vertical-align:middle}
-.cmp-table tr:not(:last-child) td{border-bottom:1px solid rgba(74,222,128,.04)}
-.cmp-param{color:var(--text);font-weight:500}
-.cmp-user{color:var(--text)}
-.cmp-ideal{color:var(--muted)}
+
+.cmp-table td{
+padding:9px 6px;
+border-bottom:1px solid #f0f4ec;
+}
+
+.cmp-param{ font-weight:600; color:#333; }
+.cmp-user{ color:#1b5e20; font-weight:500; }
+.cmp-ideal{ color:#999; }
+
 .cmp-status{
-  display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;
+display:inline-block;
+padding:3px 10px;
+border-radius:12px;
+font-size:11px;
+font-weight:600;
 }
-.st-good{background:rgba(74,222,128,.15);color:#4ade80}
-.st-high{background:rgba(248,113,113,.15);color:#f87171}
-.st-low {background:rgba(251,191,36,.15);color:#fbbf24}
 
-/* ═══════════════════════════════════════════════
-   RESULT — ALTERNATIVES
-═══════════════════════════════════════════════ */
-.alts-section{padding:1.2rem 1.4rem}
-.alts-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
-.alts-list{display:flex;flex-direction:column;gap:6px}
+.st-good{ background:#dcedc8; color:#1b5e20; }
+.st-high{ background:#f8d7da; color:#842029; }
+.st-low{  background:#fff3cd; color:#856404; }
+
+/* Alternatives */
+
+.alts-section{ margin-bottom:10px; }
+
+.alts-title{
+font-size:13px;
+font-weight:600;
+color:#555;
+text-transform:uppercase;
+letter-spacing:.5px;
+margin-bottom:12px;
+}
+
+.alts-list{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
 .alt-row{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 10px;border-radius:7px;background:var(--bg3);border:1px solid var(--line);
-  font-size:12px;
+display:flex;
+align-items:center;
+gap:12px;
+padding:10px 12px;
+background:#f5faf5;
+border-radius:10px;
+font-size:13px;
 }
-.alt-bar-bg{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
-.alt-bar-fill{height:100%;background:linear-gradient(90deg,var(--green3),var(--green));border-radius:2px;transition:width .8s ease}
-.alt-pct{font-size:11px;color:var(--muted);min-width:30px;text-align:right}
-.alt-name{min-width:90px;color:var(--text);font-weight:500;text-transform:capitalize}
 
-/* ═══════════════════════════════════════════════
-   ACCURACY FOOTER
-═══════════════════════════════════════════════ */
+.alt-name{
+min-width:95px;
+font-weight:600;
+color:#333;
+text-transform:capitalize;
+}
+
+.alt-bar-bg{
+flex:1;
+height:6px;
+background:#e0e0e0;
+border-radius:3px;
+overflow:hidden;
+}
+
+.alt-bar-fill{
+height:100%;
+background:linear-gradient(90deg,#2e7d32,#66bb6a);
+border-radius:3px;
+transition:width .8s ease;
+}
+
+.alt-pct{
+font-size:12px;
+color:#888;
+min-width:34px;
+text-align:right;
+font-weight:600;
+}
+
+/* Accuracy footer */
+
 .acc-footer{
-  font-size:11px;color:var(--muted2);text-align:center;
-  padding:.9rem;border-top:1px solid var(--line);
+text-align:center;
+font-size:12px;
+color:#999;
+padding-top:18px;
+border-top:1px solid #f0f4ec;
+margin-top:18px;
 }
-.acc-footer span{color:var(--green2);font-weight:600}
 
-/* ═══════════════════════════════════════════════
-   LOADING STATE
-═══════════════════════════════════════════════ */
-.loading{
-  padding:4rem 2rem;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:1rem;
-}
-.spin{
-  width:36px;height:36px;border-radius:50%;
-  border:2px solid var(--line);border-top-color:var(--green);
-  animation:spin .75s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-lbl{font-size:12px;color:var(--muted);animation:blink 1.4s ease infinite}
-@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+.acc-footer b{ color:#2e7d32; }
 
-/* ═══════════════════════════════════════════════
-   RESULT ANIMATION
-═══════════════════════════════════════════════ */
-.result-wrap{animation:slideUp .45s cubic-bezier(.4,0,.2,1)}
-@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+footer{
+background:#1b5e20;
+color:white;
+padding:25px;
+text-align:center;
+}
 
-/* ═══════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════ */
-@media(max-width:860px){
-  main{grid-template-columns:1fr}
-  .g3{grid-template-columns:1fr 1fr}
+/* Responsive */
+
+@media(max-width:900px){
+.predict-wrap{ grid-template-columns:1fr; }
 }
-@media(max-width:480px){
-  .g3,.g2{grid-template-columns:1fr}
-  .stat-grid{grid-template-columns:1fr 1fr}
-  .nav-pills .nav-pill:last-child{display:none}
+
+@media(max-width:540px){
+.g3{ grid-template-columns:1fr 1fr; }
+.stat-grid{ grid-template-columns:1fr 1fr; }
+.page-header h1{ font-size:32px; }
+.header-stats{ gap:28px; }
 }
+
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="brand">
-    <div class="brand-dot"></div>
-    Crop Recommendation System
-  </div>
-  <div class="nav-pills">
-    <div class="nav-pill">
-      <div class="nav-pill-val">{{ accuracy }}%</div>
-      <div class="nav-pill-lbl">Accuracy</div>
-    </div>
-    <div class="nav-pill">
-      <div class="nav-pill-val">{{ crop_count }}</div>
-      <div class="nav-pill-lbl">Crops</div>
-    </div>
-    <div class="nav-pill">
-      <div class="nav-pill-val">{{ total_samples }}</div>
-      <div class="nav-pill-lbl">Samples</div>
-    </div>
-  </div>
+
+<div class="logo">Crop Recommendation System</div>
+
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/predict-page" class="active">Predict</a></li>
+<li><a href="/login">Login</a></li>
+<li><a href="/about">About</a></li>
+</ul>
+
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-chip"> Decision Tree · Scikit-learn · Real Dataset</div>
-  <h1>Intelligent Crop<br>Recommendation</h1>
-  <p class="hero-sub">Trained on {{ total_samples }} real field records across {{ crop_count }} crop types. Enter your soil and climate data for an instant prediction.</p>
-  <div class="hero-tags">
-    <div class="hero-tag">Nitrogen <b>N</b></div>
-    <div class="hero-tag">Phosphorus <b>P</b></div>
-    <div class="hero-tag">Potassium <b>K</b></div>
-    <div class="hero-tag">Temperature <b>°C</b></div>
-    <div class="hero-tag">Humidity <b>%</b></div>
-    <div class="hero-tag">Soil pH</div>
-    <div class="hero-tag">Rainfall <b>mm</b></div>
-  </div>
+<section class="page-header">
+<h1>Get Your Crop Recommendation</h1>
+<p>Enter your soil nutrients and climate conditions below. Our machine learning model, trained on {{ total_samples }} real field records across {{ crop_count }} crop types, will recommend the best crop for your land.</p>
+
+<div class="header-stats">
+<div class="hstat">
+<div class="hstat-val">{{ accuracy }}%</div>
+<div class="hstat-lbl">Accuracy</div>
+</div>
+<div class="hstat">
+<div class="hstat-val">{{ crop_count }}</div>
+<div class="hstat-lbl">Crops</div>
+</div>
+<div class="hstat">
+<div class="hstat-val">{{ total_samples }}</div>
+<div class="hstat-lbl">Samples</div>
+</div>
+</div>
 </section>
 
-<!-- MAIN -->
-<main>
+<div class="predict-wrap">
 
-  <!-- ── LEFT: INPUTS ── -->
-  <div class="panel">
-    <div class="panel-head">
-      <div class="ph-icon">🧪</div>
-      <div class="ph-title">Soil & Climate Parameters</div>
-    </div>
-    <div class="panel-body">
+<!-- ── LEFT: INPUT PANEL ── -->
+<div class="panel">
 
-      <!-- Presets -->
-      <div class="sdiv">Quick presets</div>
-      <div class="presets">
-        <button class="preset" onclick="load('rice')">🌾 Rice</button>
-        <button class="preset" onclick="load('maize')">🌽 Maize</button>
-        <button class="preset" onclick="load('cotton')">🪡 Cotton</button>
-        <button class="preset" onclick="load('mango')">🥭 Mango</button>
-        <button class="preset" onclick="load('coffee')">☕ Coffee</button>
-        <button class="preset" onclick="load('apple')">🍏 Apple</button>
-        <button class="preset" onclick="load('banana')">🍌 Banana</button>
-        <button class="preset" onclick="load('grapes')">🍇 Grapes</button>
-        <button class="preset" onclick="resetForm()">✕ Reset</button>
-      </div>
+<div class="panel-title">
+<span>🧪</span>
+<h2>Soil & Climate Data</h2>
+</div>
 
-      <!-- Nutrients -->
-      <div class="sdiv">Soil Nutrients (mg / kg)</div>
-      <div class="field-group g3">
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Nitrogen (N)</span>
-            <span class="field-val" id="dN">63<span class="field-unit">mg</span></span>
-          </div>
-          <input type="range" id="N" min="0" max="140" value="63" step="1" oninput="upd('N','dN','mg')">
-        </div>
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Phosphorus (P)</span>
-            <span class="field-val" id="dP">35<span class="field-unit">mg</span></span>
-          </div>
-          <input type="range" id="P" min="5" max="145" value="35" step="1" oninput="upd('P','dP','mg')">
-        </div>
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Potassium (K)</span>
-            <span class="field-val" id="dK">16<span class="field-unit">mg</span></span>
-          </div>
-          <input type="range" id="K" min="5" max="205" value="16" step="1" oninput="upd('K','dK','mg')">
-        </div>
-      </div>
+<div class="sdiv">Quick presets</div>
+<div class="presets">
+<button class="preset-btn" onclick="load('rice')">🌾 Rice</button>
+<button class="preset-btn" onclick="load('maize')">🌽 Maize</button>
+<button class="preset-btn" onclick="load('cotton')">🪡 Cotton</button>
+<button class="preset-btn" onclick="load('mango')">🥭 Mango</button>
+<button class="preset-btn" onclick="load('coffee')">☕ Coffee</button>
+<button class="preset-btn" onclick="load('apple')">🍏 Apple</button>
+<button class="preset-btn" onclick="load('banana')">🍌 Banana</button>
+<button class="preset-btn" onclick="load('grapes')">🍇 Grapes</button>
+</div>
 
-      <!-- Climate -->
-      <div class="sdiv">Climate Conditions</div>
-      <div class="field-group g2">
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Temperature</span>
-            <span class="field-val" id="dT">22.0<span class="field-unit">°C</span></span>
-          </div>
-          <input type="range" id="temperature" min="8" max="44" value="22" step="0.5" oninput="upd('temperature','dT','°C')">
-        </div>
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Humidity</span>
-            <span class="field-val" id="dH">65<span class="field-unit">%</span></span>
-          </div>
-          <input type="range" id="humidity" min="14" max="100" value="65" step="1" oninput="upd('humidity','dH','%')">
-        </div>
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Rainfall</span>
-            <span class="field-val" id="dR">84<span class="field-unit">mm</span></span>
-          </div>
-          <input type="range" id="rainfall" min="20" max="299" value="84" step="1" oninput="upd('rainfall','dR','mm')">
-        </div>
-        <div class="field">
-          <div class="field-top">
-            <span class="field-lbl">Soil pH</span>
-            <span class="field-val" id="dPH">6.3<span class="field-unit">pH</span></span>
-          </div>
-          <input type="range" id="ph" min="3.5" max="9.5" value="6.3" step="0.1" oninput="upd('ph','dPH','pH')">
-        </div>
-      </div>
+<div class="sdiv">Soil nutrients (mg/kg)</div>
+<div class="field-grid g3">
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Nitrogen (N)</span>
+<span class="field-val" id="dN">63<span>mg</span></span>
+</div>
+<input type="range" id="N" min="0" max="140" value="63" step="1" oninput="upd('N','dN','mg')">
+</div>
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Phosphorus (P)</span>
+<span class="field-val" id="dP">35<span>mg</span></span>
+</div>
+<input type="range" id="P" min="5" max="145" value="35" step="1" oninput="upd('P','dP','mg')">
+</div>
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Potassium (K)</span>
+<span class="field-val" id="dK">16<span>mg</span></span>
+</div>
+<input type="range" id="K" min="5" max="205" value="16" step="1" oninput="upd('K','dK','mg')">
+</div>
+</div>
 
-      <button class="predict-btn" id="btn" onclick="predict()">
-        🌱 Analyse &amp; Recommend Crop
-      </button>
-    </div>
-  </div>
+<div class="sdiv">Climate conditions</div>
+<div class="field-grid g2">
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Temperature</span>
+<span class="field-val" id="dT">22.0<span>°C</span></span>
+</div>
+<input type="range" id="temperature" min="8" max="44" value="22" step="0.5" oninput="upd('temperature','dT','°C')">
+</div>
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Humidity</span>
+<span class="field-val" id="dH">65<span>%</span></span>
+</div>
+<input type="range" id="humidity" min="14" max="100" value="65" step="1" oninput="upd('humidity','dH','%')">
+</div>
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Rainfall</span>
+<span class="field-val" id="dR">84<span>mm</span></span>
+</div>
+<input type="range" id="rainfall" min="20" max="299" value="84" step="1" oninput="upd('rainfall','dR','mm')">
+</div>
+<div class="field">
+<div class="field-top">
+<span class="field-lbl">Soil pH</span>
+<span class="field-val" id="dPH">6.3<span>pH</span></span>
+</div>
+<input type="range" id="ph" min="3.5" max="9.5" value="6.3" step="0.1" oninput="upd('ph','dPH','pH')">
+</div>
+</div>
 
-  <!-- ── RIGHT: RESULT ── -->
-  <div class="panel" id="result">
-    <div class="panel-head">
-      <div class="ph-icon">📊</div>
-      <div class="ph-title">Recommendation</div>
-    </div>
-    <div class="empty-state">
-      <div class="empty-icon">🌾</div>
-      <p class="empty-txt">Adjust the parameters on the left and click <strong>Analyse</strong> to get your personalised crop recommendation.</p>
-    </div>
-  </div>
+<button class="predict-btn" id="btn" onclick="predict()">🌱 Analyse & Recommend Crop</button>
 
-</main>
+</div>
+
+<!-- ── RIGHT: RESULT PANEL ── -->
+<div class="panel result-panel" id="result">
+
+<div class="panel-title">
+<span>📊</span>
+<h2>Recommendation</h2>
+</div>
+
+<div class="empty-state">
+<span class="emoji">🌾</span>
+<p>Adjust the sliders on the left and click <strong>Analyse</strong> to get your personalised crop recommendation.</p>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 CropSense | Smart Crop Recommendation System
+</footer>
 
 <script>
-/* ── Presets from real dataset means ── */
 const PRESETS = {
   rice:    {N:80, P:47, K:40, temperature:23.7, humidity:82.3, ph:6.5,  rainfall:236.2},
   maize:   {N:88, P:42, K:44, temperature:22.6, humidity:65.1, ph:6.2,  rainfall:84.8},
@@ -537,7 +803,7 @@ function upd(id, dispId, unit) {
   const v = parseFloat(document.getElementById(id).value);
   const prec = (unit === '°C' || unit === 'pH') ? 1 : 0;
   document.getElementById(dispId).innerHTML =
-    v.toFixed(prec) + '<span class="field-unit">' + unit + '</span>';
+    v.toFixed(prec) + '<span>' + unit + '</span>';
 }
 
 function load(key) {
@@ -551,8 +817,6 @@ function load(key) {
   upd('temperature','dT','°C'); upd('humidity','dH','%');
   upd('rainfall','dR','mm'); upd('ph','dPH','pH');
 }
-
-function resetForm() { load('rice'); }
 
 function getVals() {
   return {
@@ -569,20 +833,18 @@ function getVals() {
 function scoreClass(s) { return s >= 75 ? 's-great' : s >= 50 ? 's-ok' : 's-poor'; }
 function scoreLabel(s) { return s >= 75 ? 'Excellent' : s >= 50 ? 'Fair' : 'Poor'; }
 function barColor(s)   { return s >= 75
-  ? 'background:linear-gradient(90deg,#166534,#4ade80)'
+  ? 'background:linear-gradient(90deg,#1b5e20,#66bb6a)'
   : s >= 50
-  ? 'background:linear-gradient(90deg,#854d0e,#fbbf24)'
-  : 'background:linear-gradient(90deg,#7f1d1d,#f87171)'; }
+  ? 'background:linear-gradient(90deg,#b8860b,#ffc107)'
+  : 'background:linear-gradient(90deg,#a51c30,#f87171)'; }
 
 const EM = {rice:'🌾',maize:'🌽',chickpea:'🫘',kidneybeans:'🫘',pigeonpeas:'🫘',mothbeans:'🫘',mungbean:'🫘',blackgram:'🫘',lentil:'🫘',pomegranate:'🍎',banana:'🍌',mango:'🥭',grapes:'🍇',watermelon:'🍉',muskmelon:'🍈',apple:'🍏',orange:'🍊',papaya:'🍑',coconut:'🥥',cotton:'🪡',jute:'🌿',coffee:'☕'};
 
 function render(d) {
-  /* soil tips */
   const tips = d.soil_tips.length
     ? d.soil_tips.map(t => `<div class="soil-tip">${t.icon} ${t.msg}</div>`).join('')
     : `<div class="soil-tip ok">✅ Soil nutrients are well-balanced for ${d.crop}.</div>`;
 
-  /* comparison table */
   const cmpRows = d.comparison.map(p => `
     <tr>
       <td class="cmp-param">${p.name}</td>
@@ -591,73 +853,66 @@ function render(d) {
       <td><span class="cmp-status st-${p.status}">${p.status === 'good' ? '✓ Good' : p.status === 'high' ? '↑ High' : '↓ Low'}</span></td>
     </tr>`).join('');
 
-  /* alternatives */
   const alts = d.alternatives.length
     ? d.alternatives.map(a => `
         <div class="alt-row">
-          <span style="font-size:16px">${EM[a.crop]||'🌱'}</span>
+          <span style="font-size:18px">${EM[a.crop]||'🌱'}</span>
           <span class="alt-name">${a.crop}</span>
           <div class="alt-bar-bg"><div class="alt-bar-fill" style="width:${a.pct}%"></div></div>
           <span class="alt-pct">${a.pct}%</span>
         </div>`).join('')
-    : '<span style="font-size:12px;color:var(--muted)">None found</span>';
+    : '<span style="font-size:12px;color:#999">None found</span>';
 
-  document.getElementById('result').style.setProperty('--ccolor', d.color);
   document.getElementById('result').innerHTML = `
-    <div class="panel-head">
-      <div class="ph-icon">📊</div>
-      <div class="ph-title">Recommendation</div>
+    <div class="panel-title">
+      <span>📊</span>
+      <h2>Recommendation</h2>
     </div>
-    <div class="result-wrap">
 
-      <div class="crop-hero" style="--ccolor:${d.color}">
-        <div class="crop-glow"></div>
-        <span class="crop-emoji">${d.emoji}</span>
-        <div class="crop-name">${d.crop}</div>
-        <div class="crop-chips">
-          <span class="crop-chip">🌿 ${d.season} Season</span>
-          <span class="crop-chip">💧 ${d.water} Water</span>
-        </div>
+    <div class="crop-hero">
+      <span class="crop-emoji">${d.emoji}</span>
+      <div class="crop-name">${d.crop}</div>
+      <div class="crop-chips">
+        <span class="crop-chip">🌿 ${d.season} Season</span>
+        <span class="crop-chip">💧 ${d.water} Water</span>
       </div>
+    </div>
 
-      <div class="stat-grid">
-        <div class="stat-cell"><div class="stat-lbl">Temperature</div><div class="stat-val">${d.inputs.temperature.toFixed(1)} °C</div></div>
-        <div class="stat-cell"><div class="stat-lbl">Humidity</div><div class="stat-val">${d.inputs.humidity.toFixed(0)}%</div></div>
-        <div class="stat-cell"><div class="stat-lbl">Rainfall</div><div class="stat-val">${d.inputs.rainfall.toFixed(0)} mm</div></div>
-        <div class="stat-cell"><div class="stat-lbl">Soil pH</div><div class="stat-val">${d.inputs.ph.toFixed(1)}</div></div>
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="stat-lbl">Temp</div><div class="stat-val">${d.inputs.temperature.toFixed(1)}°C</div></div>
+      <div class="stat-cell"><div class="stat-lbl">Humidity</div><div class="stat-val">${d.inputs.humidity.toFixed(0)}%</div></div>
+      <div class="stat-cell"><div class="stat-lbl">Rainfall</div><div class="stat-val">${d.inputs.rainfall.toFixed(0)}mm</div></div>
+      <div class="stat-cell"><div class="stat-lbl">pH</div><div class="stat-val">${d.inputs.ph.toFixed(1)}</div></div>
+    </div>
+
+    <div class="soil-section">
+      <div class="soil-head">
+        <span class="soil-title">Soil Health</span>
+        <span class="soil-badge ${scoreClass(d.soil_score)}">${scoreLabel(d.soil_score)} · ${d.soil_score}%</span>
       </div>
-
-      <div class="soil-section">
-        <div class="soil-head">
-          <span class="soil-title">Soil Health</span>
-          <span class="soil-badge ${scoreClass(d.soil_score)}">${scoreLabel(d.soil_score)} · ${d.soil_score}%</span>
-        </div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width:${d.soil_score}%;${barColor(d.soil_score)}"></div>
-        </div>
-        <div class="soil-tips">${tips}</div>
+      <div class="bar-wrap">
+        <div class="bar-fill" style="width:${d.soil_score}%;${barColor(d.soil_score)}"></div>
       </div>
+      <div class="soil-tips">${tips}</div>
+    </div>
 
-      <div class="cmp-section">
-        <div class="cmp-title">Your values vs. ideal for ${d.crop}</div>
-        <table class="cmp-table">
-          <thead><tr><th>Parameter</th><th>Your Input</th><th>Ideal Avg</th><th>Status</th></tr></thead>
-          <tbody>${cmpRows}</tbody>
-        </table>
-      </div>
+    <div class="cmp-section">
+      <div class="cmp-title">Your values vs. ideal for ${d.crop}</div>
+      <table class="cmp-table">
+        <thead><tr><th>Parameter</th><th>Your Input</th><th>Ideal Avg</th><th>Status</th></tr></thead>
+        <tbody>${cmpRows}</tbody>
+      </table>
+    </div>
 
-      <div class="alts-section">
-        <div class="alts-title">Also Suitable (Leaf Node)</div>
-        <div class="alts-list">${alts}</div>
-      </div>
+    <div class="alts-section">
+      <div class="alts-title">Also Suitable</div>
+      <div class="alts-list">${alts}</div>
+    </div>
 
-      <div class="acc-footer">
-        Model accuracy: <span>${d.model_accuracy}%</span> ·
-        DecisionTreeClassifier · sklearn ·
-        <span>{{ total_samples }}</span> samples
-      </div>
-
-    </div>`;
+    <div class="acc-footer">
+      Model accuracy: <b>${d.model_accuracy}%</b> · DecisionTreeClassifier · sklearn
+    </div>
+  `;
 }
 
 async function predict() {
@@ -665,8 +920,11 @@ async function predict() {
   btn.disabled = true;
   btn.textContent = '🔬 Running model…';
   document.getElementById('result').innerHTML = `
-    <div class="panel-head"><div class="ph-icon">📊</div><div class="ph-title">Recommendation</div></div>
-    <div class="loading"><div class="spin"></div><div class="loading-lbl">Running decision tree…</div></div>`;
+    <div class="panel-title"><span>📊</span><h2>Recommendation</h2></div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Running decision tree…</p>
+    </div>`;
 
   try {
     const res = await fetch('/predict', {
@@ -679,14 +937,17 @@ async function predict() {
     render(data);
   } catch (e) {
     document.getElementById('result').innerHTML = `
-      <div class="panel-head"><div class="ph-icon">📊</div><div class="ph-title">Recommendation</div></div>
-      <div class="empty-state"><div class="empty-icon">⚠️</div>
-      <p class="empty-txt">${e.message || 'Something went wrong. Please try again.'}</p></div>`;
+      <div class="panel-title"><span>📊</span><h2>Recommendation</h2></div>
+      <div class="empty-state">
+        <span class="emoji">⚠️</span>
+        <p>${e.message || 'Something went wrong. Please try again.'}</p>
+      </div>`;
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '🌱 Analyse &amp; Recommend Crop';
+    btn.innerHTML = '🌱 Analyse & Recommend Crop';
   }
 }
 </script>
+
 </body>
 </html>
