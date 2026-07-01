@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5faf5;
+color:#333;
+}
+
+/* NAV */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:#1b5e20;
+color:white;
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+nav ul li a:hover{
+color:#90ee90;
+}
+
+/* DASHBOARD HERO */
+.dashboard{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:80px 8%;
+background:linear-gradient(135deg,#2e7d32,#66bb6a);
+color:white;
+}
+
+.dashboard-text{
+max-width:600px;
+}
+
+.dashboard h1{
+font-size:48px;
+margin-bottom:15px;
+}
+
+.dashboard h2{
+font-size:24px;
+margin-bottom:20px;
+font-weight:400;
+}
+
+.dashboard p{
+font-size:18px;
+line-height:1.6;
+margin-bottom:30px;
+}
+
+/* BUTTONS */
+.btn{
+padding:14px 30px;
+background:white;
+color:#2e7d32;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+margin-right:15px;
+transition:0.3s;
+display:inline-block;
+}
+
+.btn:hover{
+background:#dcedc8;
+}
+
+.btn-danger{
+background:#e74c3c;
+color:white;
+}
+
+.btn-danger:hover{
+background:#c0392b;
+}
+
+/* INFO CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+padding:80px 8%;
+text-align:center;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.card h3{
+color:#2e7d32;
+margin:15px 0;
+}
+
+/* FOOTER */
+footer{
+background:#1b5e20;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:50px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+
+<div class="logo">Crop Recommendation System</div>
+
+<ul>
+
+<li><a href="/">Home</a></li>
+
+{% if not session.get("user_id") %}
+
+    <!-- PUBLIC USER -->
+    <li><a href="/about">About</a></li>
+    <li><a href="/login">Login</a></li>
+    <li><a href="/predict-page">Predict</a></li>
+
+{% else %}
+
+    <!-- LOGGED IN USER -->
+
+    {% if session.get("role") == "admin" %}
+        <li><a href="/admin/dashboard">Dashboard</a></li>
+    {% else %}
+        <li><a href="/farmer/dashboard">Dashboard</a></li>
+    {% endif %}
+
+    <li><a href="/predict-page">Predict</a></li>
+    <li><a href="/logout">Logout</a></li>
+
+{% endif %}
+
+</ul>
+
+</nav>
+
+<!-- DASHBOARD HERO -->
+<section class="dashboard">
+
+<div class="dashboard-text">
+
+<h1>Welcome {{ username }}</h1>
+
+<h2>Farmer Dashboard</h2>
+
+<p>
+This is your personalized farming dashboard. Here you can predict the best crop based on your soil and climate conditions and improve your agricultural productivity using AI-based recommendations.
+</p>
+
+<a href="/predict-page" class="btn">Predict Crop</a>
+<a href="/logout" class="btn btn-danger">Logout</a>
+
+</div>
+
+<img src="{{ url_for('static', filename='images/farm.avif') }}" width="450px" alt="farm">
+
+</section>
+
+<!-- INFO SECTION -->
+<section class="cards">
+
+<div class="card">
+<h3>🌱 Smart Prediction</h3>
+<p>Get AI-powered crop recommendations instantly.</p>
+</div>
+
+<div class="card">
+<h3>🌾 Soil Analysis</h3>
+<p>Analyze N, P, K values and pH level.</p>
+</div>
+
+<div class="card">
+<h3>🌦️ Weather Based</h3>
+<p>Uses rainfall, temperature, and humidity data.</p>
+</div>
+
+</section>
+
+<footer>
+© 2026 Crop Recommendation System | Farmer Dashboard
+</footer>
+
+</body>
+</html>
