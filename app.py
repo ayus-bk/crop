@@ -9,22 +9,66 @@ import json
 
 from database import db
 from models import User, FarmerProfile, Recommendation
+
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+import numpy as np
 import os
+import json
 
-app = Flask(__name__)
+from database import db
+from models import User, FarmerProfile, Recommendation
 
+# ===========================
+# BASE DIRECTORY
+# ===========================
 BASE = os.path.dirname(os.path.abspath(__file__))
 
-DATABASE_PATH = os.path.join(BASE, "instance", "database.db")
+# ===========================
+# FLASK APP INITIALIZATION
+# ===========================
+app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'crop_project_2026'
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DATABASE_PATH}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SECRET_KEY"] = "crop_project_2026"
+
+# Ensure instance folder exists
+os.makedirs(app.instance_path, exist_ok=True)
+
+# ===========================
+# DATABASE CONFIGURATION
+# ===========================
+DATABASE_PATH = os.path.join(app.instance_path, "database.db")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + DATABASE_PATH
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 
+# ===========================
+# DEBUG INFO
+# ===========================
+print("Instance Path:", app.instance_path)
 print("Database Path:", DATABASE_PATH)
-print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
+print("Database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+
+# ===========================
+# LOAD DATASET
+# ===========================
+print("🌱 Loading dataset and training model...")
+
+csv_path = os.path.join(BASE, "Crop_recommendation.csv")
+
+# safer check
+if not os.path.exists(csv_path):
+    raise FileNotFoundError(f"CSV file not found at: {csv_path}")
+
+df = pd.read_csv(csv_path)
+
+print("Dataset loaded successfully!")
+print("Shape:", df.shape)
 
 
 # ── Load & Train ─────────────────────────────────────────────────────────────

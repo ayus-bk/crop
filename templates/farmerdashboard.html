@@ -1,23 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>Farmer Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #16a085;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 15px;
+            padding: 12px 25px;
+            background-color: #16a085;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #138d75;
+        }
+
+        .logout {
+            background-color: #e74c3c;
+        }
+
+        .logout:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>Welcome {{ username }}</h1>
+    <div class="container">
 
-<h2>Farmer Dashboard</h2>
+        <h1>Welcome {{ username }}</h1>
 
-<p>You have successfully logged in.</p>
+        <h2>Farmer Dashboard</h2>
 
-<a href="/predict-page">Predict Crop</a>
+        <p>You have successfully logged in.</p>
 
-<br><br>
+        <a class="btn" href="/predict-page">Predict Crop</a>
 
-<a href="/logout">Logout</a>
+        <a class="btn logout" href="/logout">Logout</a>
+
+    </div>
 
 </body>
 
