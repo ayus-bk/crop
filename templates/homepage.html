@@ -204,15 +204,13 @@ margin-top:50px;
 <body>
 
 <nav>
-
 <div class="logo">Crop Recommendation System</div>
 
 <ul>
-
 <li><a href="/">Home</a></li>
-<li><a href="/predict-page">Predict</a></li>
-<!-- <li><a href="/login">Login</a></li> -->
- {% if session.get("user_id") %}
+<li><a href="/about">About</a></li>
+
+{% if session.get("user_id") %}
 
     {% if session.get("role") == "admin" %}
         <li><a href="/admin/dashboard">Dashboard</a></li>
@@ -220,18 +218,17 @@ margin-top:50px;
         <li><a href="/farmer/dashboard">Dashboard</a></li>
     {% endif %}
 
+    <li><a href="/predict-page">Predict</a></li>
     <li><a href="/logout">Logout</a></li>
 
 {% else %}
 
     <li><a href="/login">Login</a></li>
+    <li><a href="/predict-page">Predict</a></li>
 
 {% endif %}
 
-<li><a href="/about">About</a></li>
-
 </ul>
-
 </nav>
 
 <section class="hero">

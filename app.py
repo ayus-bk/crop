@@ -109,6 +109,7 @@ def register():
 # ===========================
 # LOGIN (FIXED REMEMBER ME)
 # ===========================
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -173,6 +174,54 @@ def admin_dashboard():
 
     return render_template("admin_dashboard.html", username=session["username"])
 
+    # Must be logged in
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    # Only admin
+    if session["role"] != "admin":
+        return "Access Denied"
+
+    # Dashboard Statistics
+    total_farmers = User.query.filter_by(role="farmer").count()
+
+    total_admins = User.query.filter_by(role="admin").count()
+
+    total_predictions = Recommendation.query.count()
+
+    latest_farmer = User.query.filter_by(role="farmer")\
+                              .order_by(User.created_at.desc())\
+                              .first()
+
+    return render_template(
+        "admin_dashboard.html",
+        username=session["username"],
+        total_farmers=total_farmers,
+        total_admins=total_admins,
+        total_predictions=total_predictions,
+        latest_farmer=latest_farmer
+    )
+
+
+@app.route("/admin/farmers")
+def admin_farmers():
+
+    # Check login
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    # Check admin
+    if session["role"] != "admin":
+        return "Access Denied"
+
+    farmers = User.query.filter_by(role="farmer").all()
+
+    return render_template(
+        "farmers.html",
+        farmers=farmers
+    )
+
+
 
 # ===========================
 # LOGOUT
@@ -227,7 +276,13 @@ def predict():
 
     return jsonify({
         "crop": crop,
-        "accuracy": round(accuracy * 100, 2),
+        "soil_score": 80,                 # temporary placeholder
+        "season": "Unknown",              # placeholder
+        "water": "Medium",                # placeholder
+        "soil_tips": [],                  # IMPORTANT (prevents crash)
+        "comparison": [],                 # IMPORTANT (prevents crash)
+        "alternatives": [],              # IMPORTANT (prevents crash)
+        "model_accuracy": round(accuracy * 100, 2),
         "inputs": data
     })
 

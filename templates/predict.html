@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Predict | Crop Recommendation System</title>
+<title>Crop Recommendation System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:      #f6f8f4;
@@ -36,43 +36,31 @@ body{
   overflow-x:hidden;
 }
 
-/* ══════════════════════════════════════════════
-   NAV — swapped in from homepage.html (unchanged)
-═══════════════════════════════════════════════ */
+/* NAV */
 nav{
-  font-family:'Poppins',sans-serif;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 8%;
-  background:#1b5e20;
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:200;
+  position:sticky;top:0;z-index:200;
+  background:rgba(246,248,244,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:0 2rem;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.logo{
-  font-size:28px;
-  font-weight:bold;
+.brand{
+  font-family:'Lora',serif;font-size:19px;font-weight:600;
+  color:var(--green2);display:flex;align-items:center;gap:9px;letter-spacing:.2px;
 }
-nav ul{
-  display:flex;
-  list-style:none;
-  gap:25px;
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+.nav-pills{display:flex;gap:1.6rem;align-items:center}
+.nav-pill{text-align:center}
+.nav-pill-val{font-size:14px;font-weight:600;color:var(--green2)}
+.nav-pill-lbl{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-top:1px}
+.home-btn{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:.3px;
+  padding:7px 16px;border-radius:7px;border:1px solid var(--line2);
+  background:var(--green2);color:#fff;cursor:pointer;
+  transition:background .2s;
 }
-nav ul li a{
-  color:white;
-  text-decoration:none;
-  font-weight:500;
-}
-nav ul li a:hover{
-  color:#90ee90;
-}
-nav ul li a.active{
-  color:#90ee90;
-  border-bottom:2px solid #90ee90;
-  padding-bottom:4px;
-}
+.home-btn:hover{background:var(--green3)}
 
 /* HERO */
 .hero{padding:3.2rem 2rem 2rem;text-align:center;}
@@ -313,56 +301,57 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.15)}
 .result-wrap{animation:slideUp .35s ease}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-/* ══════════════════════════════════════════════
-   FOOTER — matched to homepage.html footer
-═══════════════════════════════════════════════ */
-footer{
-  font-family:'Poppins',sans-serif;
-  background:#1b5e20;
-  color:white;
-  padding:25px;
-  text-align:center;
-  margin-top:0;
-}
-
 @media(max-width:860px){
   main{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .g3,.g2{grid-template-columns:1fr}
   .stat-grid{grid-template-columns:1fr 1fr}
+  .nav-pills .nav-pill:last-child{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     NAV — swapped in from homepage.html, unchanged
-═══════════════════════════════════════════════ -->
+<!-- NAV -->
 <nav>
-<div class="logo">Crop Recommendation System</div>
+  <div class="brand">
+    <div class="brand-dot"></div>
+    Crop Recommendation System
+  </div>
 
-<ul>
-<li><a href="/">Home</a></li>
-<li><a href="/about">About</a></li>
+  <div class="nav-pills">
 
-{% if session.get("user_id") %}
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ accuracy }}%</div>
+      <div class="nav-pill-lbl">Accuracy</div>
+    </div>
 
-    {% if session.get("role") == "admin" %}
-        <li><a href="/admin/dashboard">Dashboard</a></li>
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ crop_count }}</div>
+      <div class="nav-pill-lbl">Crops</div>
+    </div>
+
+    <div class="nav-pill">
+      <div class="nav-pill-val">{{ total_samples }}</div>
+      <div class="nav-pill-lbl">Samples</div>
+    </div>
+
+    <a href="{{ url_for('home') }}">
+      <button class="home-btn">Home</button>
+    </a>
+
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('logout') }}">
+        <button class="home-btn" style="background:#c0392b;">Logout</button>
+      </a>
     {% else %}
-        <li><a href="/farmer/dashboard">Dashboard</a></li>
+      <a href="{{ url_for('login') }}">
+        <button class="home-btn">Login</button>
+      </a>
     {% endif %}
 
-    <li><a href="/logout">Logout</a></li>
-
-{% else %}
-
-    <li><a href="/login">Login</a></li>
-
-{% endif %}
-
-</ul>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -391,7 +380,7 @@ footer{
     </div>
     <div class="panel-body">
 
-      <!-- Presets: all 22 crops -->
+      <!-- Presets: all 22 crops, image left blank via src="" -->
       <div class="sdiv">Quick presets</div>
       <div class="presets">
         <button class="preset" onclick="load('rice')"><img src="{{ url_for('static', filename='images/rice.jpeg') }}" alt="Rice">Rice</button>
@@ -495,13 +484,6 @@ footer{
   </div>
 
 </main>
-
-<!-- ══════════════════════════════════════════════
-     FOOTER — matched to homepage.html footer
-═══════════════════════════════════════════════ -->
-<footer>
-© 2026 CropSense | Smart Crop Recommendation System
-</footer>
 
 <script>
 /* ── Presets from real dataset means (key = crop image filename without extension) ── */
@@ -684,8 +666,6 @@ async function predict() {
     btn.innerHTML = 'Analyse &amp; Recommend Crop';
   }
 }
-
-
 </script>
 </body>
 </html>
