@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Manage Farmers</title>
+
+</head>
+
+<body>
+
+<h1>Registered Farmers</h1>
+
+<table border="1" cellpadding="10">
+
+<tr>
+
+<th>ID</th>
+<th>Name</th>
+<th>Username</th>
+<th>Email</th>
+<th>Phone</th>
+<th>District</th>
+<th>Municipality</th>
+<th>Ward</th>
+<th>Farm Size</th>
+<th>Actions</th>
+
+</tr>
+
+{% for farmer in farmers %}
+
+<tr>
+
+<td>{{ farmer.id }}</td>
+
+<td>{{ farmer.full_name }}</td>
+
+<td>{{ farmer.username }}</td>
+
+<td>{{ farmer.email }}</td>
+
+<td>{{ farmer.farmer_profile.phone }}</td>
+
+<td>{{ farmer.farmer_profile.district }}</td>
+
+<td>{{ farmer.farmer_profile.municipality }}</td>
+
+<td>{{ farmer.farmer_profile.ward }}</td>
+
+<td>{{ farmer.farmer_profile.farm_size }}</td>
+
+<td>
+
+<a href="/admin/edit-farmer/{{ farmer.id }}">Edit</a>
+
+|
+
+<a href="/admin/delete-farmer/{{ farmer.id }}">Delete</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/admin/dashboard">Back to Dashboard</a>
+
+</body>
+
+</html>

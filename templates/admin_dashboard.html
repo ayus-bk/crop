@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+
+<h1>Welcome {{ username }}</h1>
+
+<h2>Admin Dashboard</h2>
+
+<p>Administrator Panel</p>
+
+<a href="/logout">Logout</a>
+
+<h1>Admin Dashboard</h1>
+
+<p>Total Farmers: {{ total_farmers }}</p>
+
+<p>Total Predictions: {{ total_predictions }}</p>
+
+<p>Total Admins: {{ total_admins }}</p>
+
+{% if latest_farmer %}
+<p>Latest Farmer: {{ latest_farmer.full_name }}</p>
+{% endif %}
+
+<a href="/admin/farmers">Manage Farmers</a>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+</html>
