@@ -1,14 +1,31 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report
 import numpy as np
-import os, json
+import os
+import json
+
+from database import db
+from models import User, FarmerProfile, Recommendation
+import os
 
 app = Flask(__name__)
 
-BASE = os.path.dirname(__file__)
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+DATABASE_PATH = os.path.join(BASE, "instance", "database.db")
+
+app.config['SECRET_KEY'] = 'crop_project_2026'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DATABASE_PATH}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
+print("Database Path:", DATABASE_PATH)
+print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
+
 
 # ── Load & Train ─────────────────────────────────────────────────────────────
 print("🌱 Loading dataset and training model...")
@@ -134,14 +151,141 @@ def about():
     return render_template("aboutpage.html")
 
 
-@app.route("/register")
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template("registerpage.html")
 
+    # Show registration page
+    if request.method == 'GET':
+        return render_template("registerpage.html")
 
-@app.route("/login")
+    # Receive form data
+    fullname = request.form['fullname']
+    username = request.form['username']
+    email = request.form['email']
+    phone = request.form['phone']
+    district = request.form['district']
+    municipality = request.form['municipality']
+    ward = request.form['ward']
+    farm_size = request.form['farm_size']
+    password = request.form['password']
+    confirm_password = request.form['confirm_password']
+
+    # Password check
+    if password != confirm_password:
+        return "Passwords do not match!"
+
+    # Check existing username
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return "Username already exists!"
+
+    # Check existing email
+    existing_email = User.query.filter_by(email=email).first()
+    if existing_email:
+        return "Email already registered!"
+
+    # Create user
+    new_user = User(
+        full_name=fullname,
+        username=username,
+        email=email,
+        password=password,      # We'll hash this later
+        role="farmer"
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Create farmer profile
+    profile = FarmerProfile(
+        user_id=new_user.id,
+        phone=phone,
+        district=district,
+        municipality=municipality,
+        ward=int(ward),
+        farm_size=float(farm_size)
+    )
+
+    db.session.add(profile)
+    db.session.commit()
+    return redirect(url_for("login"))
+
+    # return "Registration Successful!"
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("loginpage.html")
+
+    if request.method == "GET":
+        return render_template("loginpage.html")
+
+    username = request.form["username"]
+    password = request.form["password"]
+
+    # Search by username OR email
+    user = User.query.filter(
+        (User.username == username) |
+        (User.email == username)
+    ).first()
+
+    if user is None:
+        return "Invalid username or email."
+
+    # For now (plain-text password)
+    if user.password != password:
+        return "Invalid password."
+
+    # Store login session
+    session["user_id"] = user.id
+    session["username"] = user.username
+    session["role"] = user.role
+
+    # Redirect according to role
+    if user.role == "admin":
+        return redirect(url_for("admin_dashboard"))
+
+    return redirect(url_for("farmer_dashboard"))
+
+
+
+@app.route("/farmer/dashboard")
+def farmer_dashboard():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session["role"] != "farmer":
+        return "Access Denied"
+
+    return render_template(
+        "farmer_dashboard.html",
+        username=session["username"]
+    )
+
+
+
+@app.route("/admin/dashboard")
+def admin_dashboard():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session["role"] != "admin":
+        return "Access Denied"
+
+    return render_template(
+        "admin_dashboard.html",
+        username=session["username"]
+    )
+
+
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect(url_for("home"))
+
 
 
 @app.route("/predict-page")
@@ -199,5 +343,11 @@ def dataset_stats():
     return jsonify({'stats': result, 'crops': all_crops,
                     'accuracy': round(accuracy*100,2), 'total': len(df)})
 
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        print("Database tables created successfully!")
+
     app.run(debug=True, port=5050)

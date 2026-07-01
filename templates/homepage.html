@@ -211,7 +211,23 @@ margin-top:50px;
 
 <li><a href="/">Home</a></li>
 <li><a href="/predict-page">Predict</a></li>
-<li><a href="/login">Login</a></li>
+<!-- <li><a href="/login">Login</a></li> -->
+ {% if session.get("user_id") %}
+
+    {% if session.get("role") == "admin" %}
+        <li><a href="/admin/dashboard">Dashboard</a></li>
+    {% else %}
+        <li><a href="/farmer/dashboard">Dashboard</a></li>
+    {% endif %}
+
+    <li><a href="/logout">Logout</a></li>
+
+{% else %}
+
+    <li><a href="/login">Login</a></li>
+
+{% endif %}
+
 <li><a href="/about">About</a></li>
 
 </ul>
@@ -223,15 +239,44 @@ margin-top:50px;
 <div class="hero-text">
 
 <h1>Crop Recommendation System</h1>
+{% if session.get("username") %}
+    <h3 style="color:#2e7d32; margin-top:10px;">
+        Welcome, {{ session["username"] }}!
+    </h3>
+{% endif %}
 
 <p>
 
 This machine learning framework empowers farmers to maximize yields by taking the guesswork out of crop selection. By analyzing real-time soil nutrients (N, P, K) and environmental factors like temperature, humidity, rainfall, and pH, advanced predictive models recommend the perfect crop for the specific land conditions. This data-driven approach bridges the gap between technology and traditional farming, boosting profitability while promoting sustainable agriculture.
 </p>
 
-<a href="/predict-page" class="btn">Start Prediction</a>
+<a href="/predict-page" class="btn">
+    Start Prediction
+</a>
 
-<a href="/login" class="btn">Login</a>
+{% if not session.get("user_id") %}
+
+<a href="/login" class="btn">
+    Login
+</a>
+
+{% else %}
+
+{% if session.get("role") == "admin" %}
+
+<a href="/admin/dashboard" class="btn">
+    Dashboard
+</a>
+
+{% else %}
+
+<a href="/farmer/dashboard" class="btn">
+    Dashboard
+</a>
+
+{% endif %}
+
+{% endif %}
 
 </div>
 
@@ -346,6 +391,7 @@ Crop Recommendation System is an advanced Machine Learning initiative developed 
 © 2026 CropSense | Smart Crop Recommendation System
 
 </footer>
+
 
 </body>
 </html>
